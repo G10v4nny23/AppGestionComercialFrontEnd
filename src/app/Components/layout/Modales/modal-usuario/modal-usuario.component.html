@@ -6,7 +6,7 @@
             <mat-grid-tile>
                 <mat-form-field appearance="outline">
                     <mat-label>Nombre Completo</mat-label>
-                    <input matInput autocomplete="off"formControlName="nombreCompleto">
+                    <input matInput autocomplete="off" formControlName="nombreCompleto">
                     <mat-icon matSuffix>account-box</mat-icon>
                 </mat-form-field>
             </mat-grid-tile>
@@ -14,7 +14,7 @@
             <mat-grid-tile>
                 <mat-form-field appearance="outline">
                     <mat-label>Correo</mat-label>
-                    <input matInput autocomplete="off"formControlName="correo">
+                    <input matInput autocomplete="off" formControlName="correo">
                     <mat-icon matSuffix>mail</mat-icon>
                 </mat-form-field>
             </mat-grid-tile>
@@ -23,7 +23,7 @@
                 <mat-form-field appearance="outline">
                     <mat-label>Rol</mat-label>
                     <mat-select formControlName="idRol">
-                        <mat-option *ngFor="let item of listaRoles"[value]="item.idRol">
+                        <mat-option *ngFor="let item of listaRoles" [value]="item.idRol">
                             {{item.nombreRol}}
                         </mat-option>
                     </mat-select>
@@ -33,10 +33,9 @@
             <mat-grid-tile>
                 <mat-form-field appearance="outline">
                     <mat-label>Contraseña</mat-label>
-                    <input matInput[type]="ocultarPassword?'password':'text'"formControlName="clave">
-                    <button mat-icon-button matSuffix (click)="ocultarPassword = !ocultarPassword" type="button"
-                    >
-                    <mat-icon matSuffix>{{ocultarPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+                    <input matInput [type]="ocultarPassword?'password':'text'" formControlName="clave">
+                    <button mat-icon-button matSuffix (click)="ocultarPassword = !ocultarPassword" type="button">
+                        <mat-icon matSuffix>{{ocultarPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
                     </button>
                 </mat-form-field>
             </mat-grid-tile>
@@ -57,5 +56,6 @@
 
 <mat-dialog-actions align="end">
     <button mat-raised-button mat-dialog-close color="warn">Volver</button>
-    <button mat-raised-button color="primary" [disabled]="formularioUsuario.invalid"(click)="guardarEditar_Usuario">{{botonAccion}}</button>
+    <button mat-raised-button color="primary" [disabled]="formularioUsuario.invalid"
+        (click)="guardarEditar_Usuario">{{botonAccion}}</button>
 </mat-dialog-actions>
