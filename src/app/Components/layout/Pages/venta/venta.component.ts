@@ -36,7 +36,7 @@ export class VentaComponent implements OnInit {
   retornarProductosPorFiltro(busqueda:any):Producto[]{
     const valorBuscado = typeof busqueda === "string" ? busqueda.toLocaleLowerCase():busqueda.nombreProducto.toLocaleLowerCase();
 
-    return this.listaProductos.filter(item => item.nombreProducto.toLocaleLowerCase().includes(valorBuscado));
+    return this.listaProductos.filter(item => item.nombreProducto?.toLocaleLowerCase().includes(valorBuscado));
   }
 
   constructor(
