@@ -30,7 +30,7 @@ export class ModalProductoComponent implements OnInit {
     private _utilidadServicio: UtilidadService
   ){
     this.formularioProducto = this.fb.group({
-      nombre: ['',Validators.required],
+      nombreProducto: ['',Validators.required],
       idCategoria: ['',Validators.required],
       stock: ['',Validators.required],
       precio: ['',Validators.required],
@@ -53,10 +53,10 @@ export class ModalProductoComponent implements OnInit {
   ngOnInit(): void {
     if(this.datosProducto != null){
       this.formularioProducto.patchValue({
-        nombre: this.datosProducto.nombreProducto,
+        nombreProducto: this.datosProducto.nombreProducto.toString(),
         idCategoria: this.datosProducto.idCategoria,
         stock: this.datosProducto.stock,
-        precio: this.datosProducto.precio,
+        precio: this.datosProducto.precio.toString(),
         esActivoProducto: this.datosProducto.esActivoProducto.toString()
       });
     }
@@ -65,10 +65,10 @@ export class ModalProductoComponent implements OnInit {
   guardarEditar_Producto(){
     const _producto: Producto = {
       idProducto: this.datosProducto == null ? 0 :this.datosProducto.idProducto,
-      nombreProducto :this.formularioProducto.value.nombreProducto,
+      nombreProducto :this.formularioProducto.value.nombreProducto.toString(),
       idCategoria: this.formularioProducto.value.idCategoria,
       descripcionCategoria: "",
-      precio: this.formularioProducto.value.precio,
+      precio: this.formularioProducto.value.precio.toString(),
       stock: this.formularioProducto.value.stock,
       esActivoProducto: parseInt(this.formularioProducto.value.esActivoProducto),
     }

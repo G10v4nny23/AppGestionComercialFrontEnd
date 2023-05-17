@@ -5,6 +5,16 @@
         <button mat-icon-button (click)="sidenav.toggle();">
             <mat-icon>menu</mat-icon>
         </button>
+
+        <span style="flex: 1 1 auto;"></span>
+        <label style="font-size: 14px; margin-right: 20px;">
+            {{correoUsuario}} | {{rolUsuario}}
+        </label>
+
+        <button mat-icon-button (click)="cerrarSesion">
+            <mat-icon>logout</mat-icon>
+        </button>
+
     </mat-toolbar-row>
 </mat-toolbar>
 
@@ -37,9 +47,14 @@
             </mat-list-item>
 
             <mat-list-item routerLink="/pages/reportes">
-                <mat-icon mat-list-icon>receipt</mat-icon>
-                <div mat-line>Reportes</div>
+                <mat-icon mat-list-icon>edit_note</mat-icon>
+                <div mat-line>Reporte</div>
             </mat-list-item>
+
+            <!-- <mat-list-item *ngFor="let menu of listaMenus"  [routerLink]="menu.urlMenu">
+                <mat-icon mat-list-icon>{{menu.icono}}</mat-icon>
+                <div mat-line>{{menu.nombre}}</div>
+            </mat-list-item> -->
 
         </mat-nav-list>
     </mat-sidenav>

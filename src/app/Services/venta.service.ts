@@ -17,10 +17,10 @@ export class VentaService {
   registrar(request: Venta): Observable<ResponseApi>{
     return this.http.post<ResponseApi>(`${this.urlApi}Registrar`, request)
   }
-  Historial(buscarPor:string, numeroVenta:string, fechaInicio:string, fechaFin:string): Observable<ResponseApi>{
+  historial(buscarPor:string, numeroVenta:string, fechaInicio:string, fechaFin:string): Observable<ResponseApi>{
     return this.http.get<ResponseApi>(`${this.urlApi}Historial?buscarPor=${buscarPor}&numeroVenta=${numeroVenta}&fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`)
   }
-  Reporte(fechaInicio:string, fechaFin:string): Observable<ResponseApi>{
+  reporte(fechaInicio:string, fechaFin:string): Observable<ResponseApi>{
     return this.http.get<ResponseApi>(`${this.urlApi}Reporte?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`)
   }
 }
