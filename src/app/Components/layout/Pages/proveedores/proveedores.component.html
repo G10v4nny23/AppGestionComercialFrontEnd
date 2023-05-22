@@ -1,0 +1,115 @@
+<table mat-table [dataSource]="dataSource">
+  <!--Columnas de la tabla proveedores-->
+  <ng-container matColumnDef="nombre">
+    <th mat-header-cell *matHeaderCellDef>Nombre</th>
+    <td mat-cell *matCellDef="let proveedor">
+      <mat-form-field>
+        <input matInput [(ngModel)]="proveedor.nombre" />
+      </mat-form-field>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="telefono">
+    <th mat-header-cell *matHeaderCellDef>Teléfono</th>
+    <td mat-cell *matCellDef="let proveedor">
+      <mat-form-field>
+        <input matInput [(ngModel)]="proveedor.telefono" />
+      </mat-form-field>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="correo">
+    <th mat-header-cell *matHeaderCellDef>Correo</th>
+    <td mat-cell *matCellDef="let proveedor">
+      <mat-form-field>
+        <input matInput [(ngModel)]="proveedor.correo" />
+      </mat-form-field>
+    </td>
+  </ng-container>
+
+
+
+  <ng-container matColumnDef="productos">
+    <th mat-header-cell *matHeaderCellDef>Productos</th>
+    <td mat-cell *matCellDef="let proveedor">
+      <div *ngFor="let producto of proveedor.productosProveedor; let i = index">
+        <mat-form-field>
+          <input
+            matInput
+            [(ngModel)]="producto.nombre"
+            name="producto{{ i }}"
+            placeholder="Producto"
+          />
+        </mat-form-field>
+      </div>
+    </td>
+  </ng-container>
+  
+  <ng-container matColumnDef="cantidades">
+    <th mat-header-cell *matHeaderCellDef>Cantidades</th>
+    <td mat-cell *matCellDef="let proveedor">
+      <div *ngFor="let producto of proveedor.productosProveedor; let j = index">
+        <mat-form-field>
+          <input
+            matInput
+            [(ngModel)]="producto.cantidad"
+            name="cantidad{{ j }}"
+            type="number"
+            placeholder="Cantidad"
+          />
+        </mat-form-field>
+      </div>
+    </td>
+  </ng-container>
+  
+
+  <ng-container matColumnDef="acciones">
+    <th mat-header-cell *matHeaderCellDef></th>
+    <td mat-cell *matCellDef="let proveedor; let i = index">
+      <!-- Agregar productos y cantidades manualmente -->
+      <div *ngFor="let producto of proveedor.productos; let j = index">
+        <mat-form-field>
+          <input
+            matInput
+            [(ngModel)]="proveedor.productosProveedor[j].nombre"
+            name="producto{{ i }}{{ j }}"
+            placeholder="Producto"
+          />
+        </mat-form-field>
+        <mat-form-field>
+          <input
+            matInput
+            [(ngModel)]="proveedor.productosProveedor[j].cantidad"
+            name="cantidad{{ i }}{{ j }}"
+            type="number"
+            placeholder="Cantidad"
+          />
+        </mat-form-field>
+      </div>
+      <button
+        mat-icon-button
+        color="primary"
+        (click)="agregarProducto(proveedor)"
+      >
+        <mat-icon>add</mat-icon>
+      </button>
+
+      <button mat-icon-button color="primary" (click)="guardarProveedoresLS()">
+        <mat-icon>group_add</mat-icon>
+      </button>
+      <button mat-icon-button color="primary" (click)="generarOrdenCompra(proveedor)">
+        <mat-icon>picture_as_pdf</mat-icon>
+      </button>
+      <button mat-icon-button color="warn" (click)="eliminarProveedor(i)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let proveedor; columns: displayedColumns"></tr>
+</table>
+
+<button mat-raised-button color="primary" (click)="agregarListaProveedor()">
+  Agregar Proveedor
+</button>
