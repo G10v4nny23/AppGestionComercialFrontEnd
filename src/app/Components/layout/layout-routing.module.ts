@@ -9,6 +9,8 @@ import { VentaComponent } from './Pages/venta/venta.component';
 import { HistorialVentaComponent } from './Pages/historial-venta/historial-venta.component';
 import { ReporteComponent } from './Pages/reporte/reporte.component';
 import { ProveedoresComponent } from './Pages/proveedores/proveedores.component';
+import { ListaFiadoComponent } from './Pages/lista-fiado/lista-fiado.component';
+import { ClientesComponent } from './Pages/clientes/clientes.component';
 
 const routes: Routes = [{
   path:'',
@@ -20,7 +22,9 @@ const routes: Routes = [{
     {path:'venta',component:VentaComponent},
     {path:'historial_venta',component:HistorialVentaComponent},
     {path:'reportes',component:ReporteComponent},
-    {path:'proveedores', component:ProveedoresComponent}
+    {path:'proveedores', component:ProveedoresComponent},
+    {path:'listaFiado', component:ListaFiadoComponent},
+    {path:'clientes', component:ClientesComponent}
    ]
 }];
 

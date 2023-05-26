@@ -1,0 +1,60 @@
+<h1>Registro de Cliente</h1>
+
+<mat-card>
+  <mat-card-content>
+    <form (ngSubmit)="guardarCliente()" #clienteForm="ngForm">
+      <mat-form-field>
+        <mat-label>Nombre</mat-label>
+        <input matInput type="text" name="nombre" [(ngModel)]="clienteRegistro.nombre" required>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Apellido</mat-label>
+        <input matInput type="text" name="apellido" [(ngModel)]="clienteRegistro.apellido" required>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Correo</mat-label>
+        <input matInput type="email" name="correo" [(ngModel)]="clienteRegistro.correo" required>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Teléfono</mat-label>
+        <input matInput type="tel" name="telefono" [(ngModel)]="clienteRegistro.telefono" required>
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" type="submit" [disabled]="clienteForm.invalid">Guardar</button>
+    </form>
+  </mat-card-content>
+</mat-card>
+<button mat-raised-button class="boton-mostrar" color="primary" (click)="mostrarClientes()">Mostrar clientes</button>
+<!-- Tabla de Clientes -->
+<mat-card>
+  <mat-card-content>
+    <table mat-table [dataSource]="listaClientes" class="mat-elevation-z8">
+      <!-- Columnas de la tabla -->
+      <ng-container matColumnDef="nombre">
+        <th mat-header-cell *matHeaderCellDef>Nombre</th>
+        <td mat-cell *matCellDef="let cliente">{{ cliente.nombre }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="apellido">
+        <th mat-header-cell *matHeaderCellDef>Apellido</th>
+        <td mat-cell *matCellDef="let cliente">{{ cliente.apellido }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="correo">
+        <th mat-header-cell *matHeaderCellDef>Correo</th>
+        <td mat-cell *matCellDef="let cliente">{{ cliente.correo }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="telefono">
+        <th mat-header-cell *matHeaderCellDef>Teléfono</th>
+        <td mat-cell *matCellDef="let cliente">{{ cliente.telefono }}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="columnasTabla"></tr>
+      <tr mat-row *matRowDef="let cliente; columns: columnasTabla"></tr>
+    </table>
+  </mat-card-content>
+</mat-card>

@@ -13,6 +13,8 @@ import { ModalUsuarioComponent } from './Modales/modal-usuario/modal-usuario.com
 import { ModalProductoComponent } from './Modales/modal-producto/modal-producto.component';
 import { ModalDetalleVentaComponent } from './Modales/modal-detalle-venta/modal-detalle-venta.component';
 import { ProveedoresComponent } from './Pages/proveedores/proveedores.component';
+import { ListaFiadoComponent } from './Pages/lista-fiado/lista-fiado.component';
+import { ClientesComponent } from './Pages/clientes/clientes.component';
 
 
 @NgModule({
@@ -26,7 +28,9 @@ import { ProveedoresComponent } from './Pages/proveedores/proveedores.component'
     ModalUsuarioComponent,
     ModalProductoComponent,
     ModalDetalleVentaComponent,
-    ProveedoresComponent
+    ProveedoresComponent,
+    ListaFiadoComponent,
+    ClientesComponent
   ],
   imports: [
     CommonModule,
