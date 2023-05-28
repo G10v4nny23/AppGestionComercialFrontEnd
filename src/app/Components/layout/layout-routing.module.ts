@@ -22,7 +22,7 @@ const routes: Routes = [{
     {path:'venta',component:VentaComponent},
     {path:'historial_venta',component:HistorialVentaComponent},
     {path:'reportes',component:ReporteComponent},
-    {path:'proveedores', component:ProveedoresComponent},
+    {path:'listaProveedores', component:ProveedoresComponent},
     {path:'listaFiado', component:ListaFiadoComponent},
     {path:'clientes', component:ClientesComponent}
    ]

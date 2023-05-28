@@ -1,115 +1,69 @@
-<table mat-table [dataSource]="dataSource">
-  <!--Columnas de la tabla proveedores-->
-  <ng-container matColumnDef="nombre">
-    <th mat-header-cell *matHeaderCellDef>Nombre</th>
-    <td mat-cell *matCellDef="let proveedor">
+<mat-tab-group>
+  <mat-tab label="Ingresar Proveedor">
+    <form (ngSubmit)="agregarProveedor()" #proveedorForm="ngForm">
       <mat-form-field>
-        <input matInput [(ngModel)]="proveedor.nombre" />
+        <input matInput placeholder="Nombre" name="nombre" [(ngModel)]="proveedor.nombre" required>
       </mat-form-field>
-    </td>
-  </ng-container>
-
-  <ng-container matColumnDef="telefono">
-    <th mat-header-cell *matHeaderCellDef>Teléfono</th>
-    <td mat-cell *matCellDef="let proveedor">
       <mat-form-field>
-        <input matInput [(ngModel)]="proveedor.telefono" />
+        <input matInput placeholder="Teléfono" name="telefono" [(ngModel)]="proveedor.telefono" required>
       </mat-form-field>
-    </td>
-  </ng-container>
-
-  <ng-container matColumnDef="correo">
-    <th mat-header-cell *matHeaderCellDef>Correo</th>
-    <td mat-cell *matCellDef="let proveedor">
       <mat-form-field>
-        <input matInput [(ngModel)]="proveedor.correo" />
+        <input matInput placeholder="Correo" name="correo" [(ngModel)]="proveedor.correo" required>
       </mat-form-field>
-    </td>
-  </ng-container>
+      <button mat-raised-button color="primary" type="submit" [disabled]="!proveedorForm.form.valid">Agregar</button>
+    </form>
+  </mat-tab>
 
 
+  <!--Segunda Pestaña-->
 
-  <ng-container matColumnDef="productos">
-    <th mat-header-cell *matHeaderCellDef>Productos</th>
-    <td mat-cell *matCellDef="let proveedor">
-      <div *ngFor="let producto of proveedor.productosProveedor; let i = index">
-        <mat-form-field>
-          <input
-            matInput
-            [(ngModel)]="producto.nombre"
-            name="producto{{ i }}"
-            placeholder="Producto"
-          />
-        </mat-form-field>
-      </div>
-    </td>
-  </ng-container>
-  
-  <ng-container matColumnDef="cantidades">
-    <th mat-header-cell *matHeaderCellDef>Cantidades</th>
-    <td mat-cell *matCellDef="let proveedor">
-      <div *ngFor="let producto of proveedor.productosProveedor; let j = index">
-        <mat-form-field>
-          <input
-            matInput
-            [(ngModel)]="producto.cantidad"
-            name="cantidad{{ j }}"
-            type="number"
-            placeholder="Cantidad"
-          />
-        </mat-form-field>
-      </div>
-    </td>
-  </ng-container>
-  
+  <mat-tab label="Ver Proveedores">
+    <table mat-table [dataSource]="proveedores" class="mat-elevation-z8">
+      <ng-container matColumnDef="nombre">
+        <th mat-header-cell *matHeaderCellDef>Nombre</th>
+        <td mat-cell *matCellDef="let proveedor">{{ proveedor.nombre }}</td>
+      </ng-container>
+      <ng-container matColumnDef="telefono">
+        <th mat-header-cell *matHeaderCellDef>Teléfono</th>
+        <td mat-cell *matCellDef="let proveedor">{{ proveedor.telefono }}</td>
+      </ng-container>
+      <ng-container matColumnDef="correo">
+        <th mat-header-cell *matHeaderCellDef>Correo</th>
+        <td mat-cell *matCellDef="let proveedor">{{ proveedor.correo }}</td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="['nombre', 'telefono', 'correo']"></tr>
+      <tr mat-row *matRowDef="let proveedor; columns: ['nombre', 'telefono', 'correo']" (click)="seleccionarProveedor(proveedor)"></tr>
+    </table>
+  </mat-tab>
 
-  <ng-container matColumnDef="acciones">
-    <th mat-header-cell *matHeaderCellDef></th>
-    <td mat-cell *matCellDef="let proveedor; let i = index">
-      <!-- Agregar productos y cantidades manualmente -->
-      <div *ngFor="let producto of proveedor.productos; let j = index">
-        <mat-form-field>
-          <input
-            matInput
-            [(ngModel)]="proveedor.productosProveedor[j].nombre"
-            name="producto{{ i }}{{ j }}"
-            placeholder="Producto"
-          />
-        </mat-form-field>
-        <mat-form-field>
-          <input
-            matInput
-            [(ngModel)]="proveedor.productosProveedor[j].cantidad"
-            name="cantidad{{ i }}{{ j }}"
-            type="number"
-            placeholder="Cantidad"
-          />
-        </mat-form-field>
-      </div>
-      <button
-        mat-icon-button
-        color="primary"
-        (click)="agregarProducto(proveedor)"
-      >
-        <mat-icon>add</mat-icon>
-      </button>
+  <!--Tercera Pestaña-->
 
-      <button mat-icon-button color="primary" (click)="guardarProveedoresLS()">
-        <mat-icon>group_add</mat-icon>
-      </button>
-      <button mat-icon-button color="primary" (click)="generarOrdenCompra(proveedor)">
-        <mat-icon>picture_as_pdf</mat-icon>
-      </button>
-      <button mat-icon-button color="warn" (click)="eliminarProveedor(i)">
-        <mat-icon>delete</mat-icon>
-      </button>
-    </td>
-  </ng-container>
+  <mat-tab label="Productos del Proveedor">
+    <h3>Proveedor: {{ proveedorSeleccionado?.nombre }}</h3>
+    <table mat-table [dataSource]="productosProveedor" class="mat-elevation-z8">
+      <ng-container matColumnDef="nombre">
+        <th mat-header-cell *matHeaderCellDef>Nombre</th>
+        <td mat-cell *matCellDef="let producto">{{ producto.nombre }}</td>
+      </ng-container>
+      <ng-container matColumnDef="cantidad">
+        <th mat-header-cell *matHeaderCellDef>Cantidad</th>
+        <td mat-cell *matCellDef="let producto">
+          <button mat-icon-button color="warn" (click)="disminuirCantidad(producto)">
+            <mat-icon>remove</mat-icon>
+          </button>
+          {{ producto.cantidad }}
+          <button mat-icon-button color="primary" (click)="aumentarCantidad(producto)">
+            <mat-icon>add</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+      <tr mat-row *matRowDef="let row; columns: ['nombre', 'cantidad']"></tr>
+    </table>
+    <button mat-raised-button color="primary" (click)="proveedorSeleccionado && generarOrdenCompra(proveedorSeleccionado)">
+      <mat-icon>picture_as_pdf</mat-icon>
+      Generar Orden de Compra
+    </button>
+  </mat-tab>
 
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let proveedor; columns: displayedColumns"></tr>
-</table>
 
-<button mat-raised-button color="primary" (click)="agregarListaProveedor()">
-  Agregar Proveedor
-</button>
+</mat-tab-group>
