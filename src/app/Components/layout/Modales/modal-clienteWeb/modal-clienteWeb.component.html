@@ -1,0 +1,66 @@
+<h2 mat-dialog-title>{{ tituloAccion }} Cliente</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="formularioCliente">
+    <mat-grid-list cols="1" rowHeight="80px">
+        <mat-grid-tile>
+            <mat-form-field appearance="outline">
+                <mat-label>Identificador</mat-label>
+                <input matInput autocomplete="off" formControlName="idCliente" placeholder="Dejar en 0"/>
+                <mat-icon matSuffix>123</mat-icon>
+              </mat-form-field>
+          </mat-grid-tile>
+        <mat-grid-tile>
+        <mat-form-field appearance="outline">
+          <mat-label>Nombre</mat-label>
+          <input matInput autocomplete="off" formControlName="nombreCliente" />
+          <mat-icon matSuffix>fit_screen</mat-icon>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <mat-form-field appearance="fill">
+          <mat-label> Fecha Registro</mat-label>
+          <input
+            matInput
+            autocomplete="off"
+            formControlName="fechaRegistroCliente"
+            [matDatepicker]="picker1"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker1"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker1></mat-datepicker>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <mat-form-field appearance="fill">
+          <mat-label> Fecha Pago</mat-label>
+          <input
+            matInput
+            autocomplete="off"
+            formControlName="fechaPagoCliente"
+            [matDatepicker]="picker2"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker2"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker2></mat-datepicker>
+        </mat-form-field>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-raised-button mat-dialog-close color="warn">Volver</button>
+  <button
+    mat-raised-button
+    color="primary"
+    [disabled]="formularioCliente.invalid"
+    (click)="guardarEditar_Cliente()"
+  >
+    {{ botonAccion }}
+  </button>
+</mat-dialog-actions>

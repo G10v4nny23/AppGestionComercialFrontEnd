@@ -11,6 +11,7 @@ import { ReporteComponent } from './Pages/reporte/reporte.component';
 import { ProveedoresComponent } from './Pages/proveedores/proveedores.component';
 import { ListaFiadoComponent } from './Pages/lista-fiado/lista-fiado.component';
 import { ClientesComponent } from './Pages/clientes/clientes.component';
+import { ClientePruebaWebComponent } from './Pages/clientePruebaWeb/clientePruebaWeb.component';
 
 const routes: Routes = [{
   path:'',
@@ -24,7 +25,8 @@ const routes: Routes = [{
     {path:'reportes',component:ReporteComponent},
     {path:'listaProveedores', component:ProveedoresComponent},
     {path:'listaFiado', component:ListaFiadoComponent},
-    {path:'clientes', component:ClientesComponent}
+    {path:'clientes', component:ClientesComponent},
+    {path:'clientePrueba', component:ClientePruebaWebComponent}
    ]
 }];
 

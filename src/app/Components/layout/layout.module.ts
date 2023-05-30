@@ -15,6 +15,9 @@ import { ModalDetalleVentaComponent } from './Modales/modal-detalle-venta/modal-
 import { ProveedoresComponent } from './Pages/proveedores/proveedores.component';
 import { ListaFiadoComponent } from './Pages/lista-fiado/lista-fiado.component';
 import { ClientesComponent } from './Pages/clientes/clientes.component';
+import { ClientePruebaWebComponent } from './Pages/clientePruebaWeb/clientePruebaWeb.component';
+import { ModalClienteWebComponent } from './Modales/modal-clienteWeb/modal-clienteWeb.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -28,6 +31,8 @@ import { ClientesComponent } from './Pages/clientes/clientes.component';
     ModalUsuarioComponent,
     ModalProductoComponent,
     ModalDetalleVentaComponent,
+    ModalClienteWebComponent,
+    ClientePruebaWebComponent,
     ProveedoresComponent,
     ListaFiadoComponent,
     ClientesComponent
@@ -35,7 +40,7 @@ import { ClientesComponent } from './Pages/clientes/clientes.component';
   imports: [
     CommonModule,
     LayoutRoutingModule,
-    SharedModule
+    SharedModule, ReactiveFormsModule
   ]
 })
 export class LayoutModule { }

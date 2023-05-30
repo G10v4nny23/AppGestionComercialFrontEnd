@@ -1,0 +1,68 @@
+
+<h1 style="margin:20px 0px 0px 40px">Clientes</h1>
+
+<mat-card style="margin:20px 40px 40px 40px">
+
+    <mat-card-title>
+        <button mat-raised-button color="primary" (click)="nuevoCliente()">
+            <mat-icon mat-list-icon>add</mat-icon>Nuevo Cliente
+        </button>
+    </mat-card-title>
+
+    <mat-divider></mat-divider>
+
+    <mat-card-content class="dashboard-card-content">
+
+
+        <div class="mat-elevation-z2">
+
+            <mat-table [dataSource]="dataListaCliente" class="mat-elevation-z8">
+                <!-- Definición de las columnas -->
+                <ng-container matColumnDef="idCliente">
+                  <mat-header-cell *matHeaderCellDef>ID</mat-header-cell>
+                  <mat-cell *matCellDef="let element">{{ element.idCliente }}</mat-cell>
+                </ng-container>
+              
+                <ng-container matColumnDef="nombreCliente">
+                  <mat-header-cell *matHeaderCellDef>Nombre</mat-header-cell>
+                  <mat-cell *matCellDef="let element">{{ element.nombreCliente }}</mat-cell>
+                </ng-container>
+              
+                <ng-container matColumnDef="fechaRegistroCliente">
+                  <mat-header-cell *matHeaderCellDef>Fecha Registro</mat-header-cell>
+                  <mat-cell *matCellDef="let element">{{ element.fechaRegistroCliente }}</mat-cell>
+                </ng-container>
+              
+                <ng-container matColumnDef="fechaPagoCliente">
+                  <mat-header-cell *matHeaderCellDef>Fecha Pago</mat-header-cell>
+                  <mat-cell *matCellDef="let element">{{ element.fechaPagoCliente }}</mat-cell>
+                </ng-container>
+              
+                <ng-container matColumnDef="acciones">
+                  <mat-header-cell *matHeaderCellDef style="width: 80px;">Acciones</mat-header-cell>
+                  <mat-cell *matCellDef="let element">
+                    <button mat-icon-button color="primary" (click)="editarCliente(element)">
+                      <mat-icon>edit</mat-icon>
+                    </button>
+                    <button mat-icon-button color="warn" (click)="eliminarCliente(element)">
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  </mat-cell>
+                </ng-container>
+              
+                <!-- Definición de la fila de encabezado -->
+                <mat-header-row *matHeaderRowDef="columnasTabla"></mat-header-row>
+              
+                <!-- Definición de la fila de datos -->
+                <mat-row *matRowDef="let row; columns: columnasTabla"></mat-row>
+              </mat-table>
+              
+            <mat-paginator [pageSizeOptions]="[5,10,20]" showFirstLastButtons>
+            </mat-paginator>
+
+            
+        </div>
+    </mat-card-content>
+</mat-card>
+
+
