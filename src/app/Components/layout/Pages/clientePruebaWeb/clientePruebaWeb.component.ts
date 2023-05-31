@@ -18,9 +18,12 @@ import { ClienteWeb } from 'src/app/Interfaces/clienteWeb';
 export class ClientePruebaWebComponent implements OnInit, AfterViewInit {
   columnasTabla: string[] = [
     'idCliente',
+    'rut',
     'nombreCliente',
     'fechaRegistroCliente',
     'fechaPagoCliente',
+    'telefono',
+    'correo',
     'acciones'
   ];
   dataInicio: ClienteWeb[] = [];
@@ -37,70 +40,80 @@ export class ClientePruebaWebComponent implements OnInit, AfterViewInit {
     this._clienteServicio.lista().subscribe({
       next: (data) => {
         if (data.status) {
-          this.dataListaCliente.data = data.value;  
-        }
-        else {
-          console.log(data.status)
-          this._utilidadServicio.mostrarAlerta(
-            'No se encontraron datos',
-            'Error'
-          );
-
+          this.dataListaCliente.data = data.value;
+          this.actualizarDatosAdicionalesLocalStorage();
+        } else {
+          console.log(data.status);
+          this._utilidadServicio.mostrarAlerta('No se encontraron datos', 'Error');
         }
       },
       error: (e) => {},
     });
   }
 
+  actualizarDatosAdicionalesLocalStorage() {
+    this.dataListaCliente.data.forEach((cliente) => {
+      const claveLocalStorage = `adicionales${cliente.nombreCliente}`;
+      const datosAdicionalesString = localStorage.getItem(claveLocalStorage);
+      if (datosAdicionalesString) {
+        const datosAdicionales = JSON.parse(datosAdicionalesString);
+        cliente.correo = datosAdicionales.correo;
+        cliente.telefono = datosAdicionales.telefono;
+        cliente.rut = datosAdicionales.rut;
+      }
+    });
+    this.dataListaCliente.data = [...this.dataListaCliente.data];
+  }
+
   ngOnInit(): void {
     this.obtenerClientes();
   }
+
   ngAfterViewInit(): void {
-    this.dataListaCliente.paginator = this.paginacionTabla
+    this.dataListaCliente.paginator = this.paginacionTabla;
   }
 
-  nuevoCliente(){
-    this.dialog.open(ModalClienteWebComponent,{
-      disableClose:true
-    }).afterClosed().subscribe(resultado =>{
-      if(resultado === "true")this.obtenerClientes();
+  nuevoCliente() {
+    this.dialog.open(ModalClienteWebComponent, {
+      disableClose: true,
+    }).afterClosed().subscribe(resultado => {
+      if (resultado === 'true') this.obtenerClientes();
     });
   }
 
   editarCliente(cliente: ClienteWeb) {
     this.dialog.open(ModalClienteWebComponent, {
       disableClose: true,
-      data: cliente
+      data: cliente,
     }).afterClosed().subscribe(resultado => {
-      if (resultado === "true") this.obtenerClientes();
+      if (resultado === 'true') this.obtenerClientes();
     });
   }
-  
 
-
-  eliminarCliente(cliente:ClienteWeb){
+  eliminarCliente(cliente: ClienteWeb) {
     Swal.fire({
-      title:'Desea eliminar al cliente?',
+      title: 'Desea eliminar al cliente?',
       text: cliente.nombreCliente,
-      icon:'warning',
-      confirmButtonColor:'#3085d6',
-      confirmButtonText: "Si, eliminar",
+      icon: 'warning',
+      confirmButtonColor: '#3085d6',
+      confirmButtonText: 'Si, eliminar',
       showCancelButton: true,
       cancelButtonColor: '#d33',
-      cancelButtonText: 'No,volver'
-    }).then((resultado)=>{
-      if(resultado.isConfirmed){
+      cancelButtonText: 'No, volver',
+    }).then((resultado) => {
+      if (resultado.isConfirmed) {
         this._clienteServicio.eliminar(cliente.idCliente).subscribe({
-          next:(data)=>{
-            if(data.status){
-              this._utilidadServicio.mostrarAlerta("El cliente fue eliminado", "Exito")
+          next: (data) => {
+            if (data.status) {
+              this._utilidadServicio.mostrarAlerta('El cliente fue eliminado', 'Exito');
               this.obtenerClientes();
-            }else{
-              this._utilidadServicio.mostrarAlerta("El cliente no pudo ser eliminado","Error")
+            } else {
+              this._utilidadServicio.mostrarAlerta('El cliente no pudo ser eliminado', 'Error');
             }
-          },error:(e)=>{}
-        })
+          },
+          error: (e) => {},
+        });
       }
-    })
+    });
   }
 }

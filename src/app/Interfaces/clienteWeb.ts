@@ -3,5 +3,7 @@ export interface ClienteWeb {
     nombreCliente: string;
     fechaRegistroCliente: Date;
     fechaPagoCliente: Date;
-    
+    correo:string,
+    rut:string,
+    telefono:string
 }

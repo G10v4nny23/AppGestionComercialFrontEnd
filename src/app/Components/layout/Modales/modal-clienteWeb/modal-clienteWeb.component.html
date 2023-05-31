@@ -3,14 +3,20 @@
 <mat-dialog-content>
   <form [formGroup]="formularioCliente">
     <mat-grid-list cols="1" rowHeight="80px">
-        <mat-grid-tile>
-            <mat-form-field appearance="outline">
-                <mat-label>Identificador</mat-label>
-                <input matInput autocomplete="off" formControlName="idCliente" placeholder="Dejar en 0"/>
-                <mat-icon matSuffix>123</mat-icon>
-              </mat-form-field>
-          </mat-grid-tile>
-        <mat-grid-tile>
+      <mat-grid-tile>
+        <mat-form-field appearance="outline">
+          <mat-label>Identificador</mat-label>
+          <input
+            matInput
+            autocomplete="off"
+            formControlName="idCliente"
+            placeholder="Dejar en 0"
+          />
+          <mat-icon matSuffix>123</mat-icon>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <mat-grid-tile> </mat-grid-tile>
         <mat-form-field appearance="outline">
           <mat-label>Nombre</mat-label>
           <input matInput autocomplete="off" formControlName="nombreCliente" />
@@ -47,6 +53,28 @@
             [for]="picker2"
           ></mat-datepicker-toggle>
           <mat-datepicker #picker2></mat-datepicker>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <mat-form-field appearance="outline">
+          <mat-label>Correo electrónico</mat-label>
+          <input matInput autocomplete="off" formControlName="correo" />
+          <mat-icon matSuffix>email</mat-icon>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <mat-form-field appearance="outline">
+          <mat-label>Rut</mat-label>
+          <input matInput autocomplete="off" formControlName="rut" />
+          <mat-icon matSuffix></mat-icon>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <mat-form-field appearance="outline">
+          <mat-label>Teléfono</mat-label>
+          <input matInput autocomplete="off" formControlName="telefono" />
+          <mat-icon matSuffix>telefono</mat-icon>
         </mat-form-field>
       </mat-grid-tile>
     </mat-grid-list>

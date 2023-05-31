@@ -11,6 +11,7 @@ import { Producto } from 'src/app/Interfaces/producto';
 import { Venta } from 'src/app/Interfaces/venta';
 import { DetalleVenta } from 'src/app/Interfaces/detalle-venta';
 import Swal from 'sweetalert2';
+import jsPDF from 'jspdf';
 
 @Component({
   selector: 'app-venta',
@@ -106,36 +107,67 @@ export class VentaComponent implements OnInit {
     this.datosDetalleVenta = new MatTableDataSource(this.listaProductosParaVenta);
   }
 
-  registrarVenta(){
-    if(this.listaProductosParaVenta.length > 0){
+  registrarVenta() {
+    if (this.listaProductosParaVenta.length > 0) {
       this.bloquearBotonRegistrar = true;
-
+  
       const request: Venta = {
         tipoPago: this.tipodePagoPorDefecto,
         totalTexto: String(this.totalPagar.toFixed(2)),
         detalleVenta: this.listaProductosParaVenta
-      }
+      };
+  
       this._ventaServicio.registrar(request).subscribe({
-        next: (response) =>{
-          if(response.status){
+        next: (response) => {
+          if (response.status) {
+            this.generarBoleta(this.tipodePagoPorDefecto, String(this.totalPagar.toFixed(2)), response.value.numeroDocumento);
             this.totalPagar = 0.00;
             this.listaProductosParaVenta = [];
             this.datosDetalleVenta = new MatTableDataSource(this.listaProductosParaVenta);
-
+  
             Swal.fire({
               icon: 'success',
               title: 'Venta Registrada!',
-              text:`Numero de venta: ${response.value.numeroDocumento}`
-            })
-          }else
-            this._utilidadServicio.mostrarAlerta("No se pudo registrar la venta","Oops");
+              text: `Numero de venta: ${response.value.numeroDocumento}`
+            }).then(() => {
+              // Llama al método generarBoleta() con los datos de la venta
+              
+            });
+          } else {
+            this._utilidadServicio.mostrarAlerta("No se pudo registrar la venta", "Oops");
+          }
         },
-        complete:()=>{
+        complete: () => {
           this.bloquearBotonRegistrar = false;
+          
         },
-        error:(e) => {}
-      })
+        error: (e) => {}
+      });
     }
+  }
+  
+
+  generarBoleta(tipoPago:string, totalTexto:string, numeroVenta:string){
+
+    const doc = new jsPDF({
+      format:[100,150],//tamaño en mm
+      unit:'mm'
+    });
+
+    //contenido de la boleta
+    doc.text('######################',10,20);
+    doc.text('Boleta de Venta',10,30);
+    doc.text('######################',10,40);
+
+    //datos de la venta
+    doc.text(`Tipo de Pago: ${tipoPago}`,10,50);
+    doc.text(`Total a Pagar: ${totalTexto}`,10,60);
+    doc.text(`Número de Venta: ${numeroVenta}`,10,70);
+
+    //guardar el pdf
+    const nombrePDF = `boleta_venta_${numeroVenta}.pdf`
+    doc.save(nombrePDF)
+
   }
 
 }
