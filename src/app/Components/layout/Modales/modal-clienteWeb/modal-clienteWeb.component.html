@@ -5,18 +5,12 @@
     <mat-grid-list cols="1" rowHeight="80px">
       <mat-grid-tile>
         <mat-form-field appearance="outline">
-          <mat-label>Identificador</mat-label>
-          <input
-            matInput
-            autocomplete="off"
-            formControlName="idCliente"
-            placeholder="Dejar en 0"
-          />
-          <mat-icon matSuffix>123</mat-icon>
+          <mat-label>Rut</mat-label>
+          <input matInput autocomplete="off" formControlName="rutCliente" />
+          <mat-icon matSuffix></mat-icon>
         </mat-form-field>
       </mat-grid-tile>
       <mat-grid-tile>
-        <mat-grid-tile> </mat-grid-tile>
         <mat-form-field appearance="outline">
           <mat-label>Nombre</mat-label>
           <input matInput autocomplete="off" formControlName="nombreCliente" />
@@ -24,56 +18,23 @@
         </mat-form-field>
       </mat-grid-tile>
       <mat-grid-tile>
-        <mat-form-field appearance="fill">
-          <mat-label> Fecha Registro</mat-label>
-          <input
-            matInput
-            autocomplete="off"
-            formControlName="fechaRegistroCliente"
-            [matDatepicker]="picker1"
-          />
-          <mat-datepicker-toggle
-            matSuffix
-            [for]="picker1"
-          ></mat-datepicker-toggle>
-          <mat-datepicker #picker1></mat-datepicker>
-        </mat-form-field>
-      </mat-grid-tile>
-      <mat-grid-tile>
-        <mat-form-field appearance="fill">
-          <mat-label> Fecha Pago</mat-label>
-          <input
-            matInput
-            autocomplete="off"
-            formControlName="fechaPagoCliente"
-            [matDatepicker]="picker2"
-          />
-          <mat-datepicker-toggle
-            matSuffix
-            [for]="picker2"
-          ></mat-datepicker-toggle>
-          <mat-datepicker #picker2></mat-datepicker>
-        </mat-form-field>
-      </mat-grid-tile>
-
-      <mat-grid-tile>
         <mat-form-field appearance="outline">
-          <mat-label>Correo electrónico</mat-label>
-          <input matInput autocomplete="off" formControlName="correo" />
-          <mat-icon matSuffix>email</mat-icon>
-        </mat-form-field>
-      </mat-grid-tile>
-      <mat-grid-tile>
-        <mat-form-field appearance="outline">
-          <mat-label>Rut</mat-label>
-          <input matInput autocomplete="off" formControlName="rut" />
+          <mat-label>Apellido</mat-label>
+          <input matInput autocomplete="off" formControlName="apellidoCliente" />
           <mat-icon matSuffix></mat-icon>
         </mat-form-field>
       </mat-grid-tile>
       <mat-grid-tile>
         <mat-form-field appearance="outline">
+          <mat-label>Correo electrónico</mat-label>
+          <input matInput autocomplete="off" formControlName="correoCliente" />
+          <mat-icon matSuffix>email</mat-icon>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <mat-form-field appearance="outline">
           <mat-label>Teléfono</mat-label>
-          <input matInput autocomplete="off" formControlName="telefono" />
+          <input matInput autocomplete="off" formControlName="fonoCliente" />
           <mat-icon matSuffix>telefono</mat-icon>
         </mat-form-field>
       </mat-grid-tile>

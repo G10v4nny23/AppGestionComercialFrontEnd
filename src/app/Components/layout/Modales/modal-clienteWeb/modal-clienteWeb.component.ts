@@ -41,13 +41,11 @@ export class ModalClienteWebComponent implements OnInit {
     private _utilidadServicio: UtilidadService
   ) {
     this.formularioCliente = this.fb.group({
-      idCliente: [ this.datosCliente?.idCliente || '', Validators.required],
-      nombreCliente: ['', Validators.required],
-      fechaRegistroCliente: ['', Validators.required],
-      fechaPagoCliente: ['', Validators.required],
-      telefono:[''],
-      correo:[''],
-      rut:['']
+      rutCliente:['',Validators.required],
+      nombreCliente:['',Validators.required],
+      apellidoCliente:['',Validators.required],
+      correoCliente:['',Validators.required],
+      fonoCliente:['',Validators.required],
     });
     if(this.datosCliente != null){
       this.tituloAccion = "Editar";
@@ -57,10 +55,11 @@ export class ModalClienteWebComponent implements OnInit {
   ngOnInit():void {
     if(this.datosCliente != null){
       this.formularioCliente.patchValue({
-        idCliente: this.datosCliente.idCliente,
-        nombreCliente: this.datosCliente.nombreCliente.toString(),
-        fechaRegistroCliente: this.datosCliente.fechaRegistroCliente,
-        fechaPagoCliente: this.datosCliente.fechaPagoCliente
+        rutCliente : this.datosCliente.rutCliente,
+        nombreCliente : this.datosCliente.nombreCliente,
+        apellidoCliente : this.datosCliente.apellidoCliente,
+        correoCliente : this.datosCliente.correoCliente,
+        fonoCliente : this.datosCliente.fonoCliente,
       });
     }
 
@@ -68,13 +67,12 @@ export class ModalClienteWebComponent implements OnInit {
 
   guardarEditar_Cliente() {
     const cliente: ClienteWeb = {
-      idCliente: this.formularioCliente.get('idCliente')?.value,
-      nombreCliente: this.formularioCliente.get('nombreCliente')?.value.toString(),
-      fechaRegistroCliente: new Date(this.formularioCliente.get('fechaRegistroCliente')?.value),
-      fechaPagoCliente: new Date(this.formularioCliente.get('fechaPagoCliente')?.value),
-      correo: this.formularioCliente.get('correo')?.value,
-      rut: this.formularioCliente.get('rut')?.value,
-      telefono: this.formularioCliente.get('telefono')?.value
+      rutCliente: this.formularioCliente.get('rutCliente')?.value,
+      nombreCliente: this.formularioCliente.get('nombreCliente')?.value,
+      apellidoCliente: this.formularioCliente.get('apellidoCliente')?.value,
+      correoCliente: this.formularioCliente.get('correoCliente')?.value,
+      fonoCliente: this.formularioCliente.get('fonoCliente')?.value,
+  
     };
   
     const claveLocalStorage = `adicionales${cliente.nombreCliente}`; // Utiliza el campo 'rut' como parte de la clave
@@ -86,17 +84,6 @@ export class ModalClienteWebComponent implements OnInit {
           if (data.status) {
             this._utilidadServicio.mostrarAlerta("El cliente se registró correctamente", "Exito");
             this.modalActual.close("true");
-  
-            // Guardar datos adicionales en el localStorage
-            const datosAdicionales = {
-              rut: cliente.rut,
-              correo: cliente.correo,
-              telefono: cliente.telefono,
-              nombre: cliente.nombreCliente
-            };
-            localStorage.setItem(claveLocalStorage, JSON.stringify(datosAdicionales));
-          } else {
-            this._utilidadServicio.mostrarAlerta("No se pudo registrar el cliente", "Error");
           }
         },
         error: (e) => {}
@@ -108,16 +95,6 @@ export class ModalClienteWebComponent implements OnInit {
           if (data.status) {
             this._utilidadServicio.mostrarAlerta("Cliente editado correctamente", "Exito");
             this.modalActual.close("true");
-  
-            // Actualizar datos adicionales en el localStorage
-            const datosAdicionales = {
-              rut: cliente.rut,
-              correo: cliente.correo,
-              telefono: cliente.telefono
-            };
-            localStorage.setItem(claveLocalStorage, JSON.stringify(datosAdicionales));
-          } else {
-            this._utilidadServicio.mostrarAlerta("El cliente no se pudo editar", "Error");
           }
         },
         error: (e) => {}

@@ -17,13 +17,11 @@ import { ClienteWeb } from 'src/app/Interfaces/clienteWeb';
 })
 export class ClientePruebaWebComponent implements OnInit, AfterViewInit {
   columnasTabla: string[] = [
-    'idCliente',
-    'rut',
+    'rutCliente',
     'nombreCliente',
-    'fechaRegistroCliente',
-    'fechaPagoCliente',
-    'telefono',
-    'correo',
+    'apellidoCliente',
+    'correoCliente',
+    'fonoCliente',
     'acciones'
   ];
   dataInicio: ClienteWeb[] = [];
@@ -41,7 +39,7 @@ export class ClientePruebaWebComponent implements OnInit, AfterViewInit {
       next: (data) => {
         if (data.status) {
           this.dataListaCliente.data = data.value;
-          this.actualizarDatosAdicionalesLocalStorage();
+          
         } else {
           console.log(data.status);
           this._utilidadServicio.mostrarAlerta('No se encontraron datos', 'Error');
@@ -51,19 +49,7 @@ export class ClientePruebaWebComponent implements OnInit, AfterViewInit {
     });
   }
 
-  actualizarDatosAdicionalesLocalStorage() {
-    this.dataListaCliente.data.forEach((cliente) => {
-      const claveLocalStorage = `adicionales${cliente.nombreCliente}`;
-      const datosAdicionalesString = localStorage.getItem(claveLocalStorage);
-      if (datosAdicionalesString) {
-        const datosAdicionales = JSON.parse(datosAdicionalesString);
-        cliente.correo = datosAdicionales.correo;
-        cliente.telefono = datosAdicionales.telefono;
-        cliente.rut = datosAdicionales.rut;
-      }
-    });
-    this.dataListaCliente.data = [...this.dataListaCliente.data];
-  }
+
 
   ngOnInit(): void {
     this.obtenerClientes();
@@ -102,7 +88,7 @@ export class ClientePruebaWebComponent implements OnInit, AfterViewInit {
       cancelButtonText: 'No, volver',
     }).then((resultado) => {
       if (resultado.isConfirmed) {
-        this._clienteServicio.eliminar(cliente.idCliente).subscribe({
+        this._clienteServicio.eliminar(cliente.rutCliente).subscribe({
           next: (data) => {
             if (data.status) {
               this._utilidadServicio.mostrarAlerta('El cliente fue eliminado', 'Exito');

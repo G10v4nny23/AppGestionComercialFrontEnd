@@ -24,8 +24,8 @@ guardar(request: ClienteWeb): Observable<ResponseApi>{
 editar(request: ClienteWeb): Observable<ResponseApi>{
   return this.http.put<ResponseApi>(`${this.urlApi}Editar`, request)
 }
-eliminar(idCliente:number): Observable<ResponseApi>{
-  return this.http.delete<ResponseApi>(`${this.urlApi}Eliminar/${idCliente}`)
+eliminar(rutCliente:string): Observable<ResponseApi>{
+  return this.http.delete<ResponseApi>(`${this.urlApi}Eliminar/${rutCliente}`)
 }
 
 }
