@@ -18,6 +18,7 @@ import { ClientesComponent } from './Pages/clientes/clientes.component';
 import { ClientePruebaWebComponent } from './Pages/clientePruebaWeb/clientePruebaWeb.component';
 import { ModalClienteWebComponent } from './Modales/modal-clienteWeb/modal-clienteWeb.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { PruebaWSPComponent } from './Pages/prueba-wsp/prueba-wsp.component';
 
 
 @NgModule({
@@ -35,7 +36,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     ClientePruebaWebComponent,
     ProveedoresComponent,
     ListaFiadoComponent,
-    ClientesComponent
+    ClientesComponent,
+    PruebaWSPComponent
   ],
   imports: [
     CommonModule,

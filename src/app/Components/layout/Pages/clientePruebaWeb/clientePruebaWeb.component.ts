@@ -38,6 +38,7 @@ export class ClientePruebaWebComponent implements OnInit, AfterViewInit {
     this._clienteServicio.lista().subscribe({
       next: (data) => {
         if (data.status) {
+          console.log(data.status)
           this.dataListaCliente.data = data.value;
           
         } else {
