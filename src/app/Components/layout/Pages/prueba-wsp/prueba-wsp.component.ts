@@ -8,7 +8,11 @@ import { UtilidadService } from 'src/app/Reutilizable/utilidad.service';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { HttpClient } from '@angular/common/http';
-import { urlAlphabet } from 'nanoid';
+import { ClienteWeb } from 'src/app/Interfaces/clienteWeb';
+import { ClienteWebService } from 'src/app/Services/clienteWeb.service';
+import { MatDialog } from '@angular/material/dialog';
+
+
 
 export const MY_DATA_FORMATS = {
   parse: {
@@ -40,35 +44,67 @@ export class PruebaWSPComponent implements OnInit {
     'actions'
   ];
 
-
-  message : string = 'hola mi chan deposita';
-  phoneNumber: string = '56945148418';
+  selectedRow:any;
+  currentDate: Date;
+  formattedDate: string;
+  listadoClientes : ClienteWeb[] = []
+  message : string;
+  phoneNumber: string;
 
   constructor(
     private servicioFiado: ServicioFiadoService,
     private utilidad: UtilidadService,
-    private http:HttpClient
-  ) {}
+    private clienteService: ClienteWebService,
+    private http:HttpClient,
+    private dialog:MatDialog
+  ) {
+    this.currentDate = new Date();
+    this.formattedDate = moment(this.currentDate).format('DD/MM/YYYY')
+    this.message = `Estimado Cliente, le informamos que su boleta fue registrada con fecha ${this.formattedDate}. Gracias por preferirnos`;
+    this.phoneNumber = ''
+  }
 
   ngOnInit(): void {
     this.obtenerDatosTabla();
+    this.listarCliente();
   }
 
-  enviarWSP(){
-    const URLApi = 'http://localhost:3001/lead';
-    const payload = {
-      message: this.message,
-      phone:this.phoneNumber
-    };
+  sendWhatsAppMessage(row: any) {
+    const rutCliente = row.rutCliente;
+    const clienteEncontrado = this.listadoClientes.find(cliente => cliente.rutCliente === rutCliente);
+    const phoneNumber = clienteEncontrado?.fonoCliente;
+    const formattedNumber = phoneNumber?.substring(1);
 
-    this.http.post(URLApi, payload).subscribe(
-      ()=>{
-        this.utilidad.mostrarAlerta("Mensaje enviado correctamente.", "Listo!")
-      },error =>{
-        this.utilidad.mostrarAlerta("Mensaje no ha sido enviado.", "Oops!")
+      const payload = {
+        message: this.message,
+        phone: formattedNumber
+      };
+      const URLApi = 'http://localhost:3001/lead';
+ 
+      this.http.post(URLApi, payload).subscribe(
+        ()=>{
+          this.utilidad.mostrarAlerta("Mensaje Enviado!", "Listo!")
+        }, error=>{
+          this.utilidad.mostrarAlerta("Mensaje no ha sido enviado", "Oops!")
+        }
+      )
+
+  }
+  
+  
+
+
+  listarCliente(){
+    this.clienteService.lista().subscribe({
+      next:(data)=>{
+        if(data.status)
+        this.listadoClientes = data.value
+        console.log(this.listadoClientes)
       }
-    )
+    })
   }
+
+
 
   obtenerDatosTabla() {
     this.servicioFiado.lista().subscribe({
@@ -87,7 +123,6 @@ export class PruebaWSPComponent implements OnInit {
       },
     });
   }
-
 
 
 

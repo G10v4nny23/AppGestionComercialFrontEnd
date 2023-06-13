@@ -21,6 +21,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { PruebaWSPComponent } from './Pages/prueba-wsp/prueba-wsp.component';
 
 
+
 @NgModule({
   declarations: [
     DashBoardComponent,
@@ -37,7 +38,7 @@ import { PruebaWSPComponent } from './Pages/prueba-wsp/prueba-wsp.component';
     ProveedoresComponent,
     ListaFiadoComponent,
     ClientesComponent,
-    PruebaWSPComponent
+    PruebaWSPComponent,
   ],
   imports: [
     CommonModule,
