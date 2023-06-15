@@ -26,7 +26,7 @@ const routes: Routes = [{
     {path:'reportes',component:ReporteComponent},
     {path:'listaProveedores', component:ProveedoresComponent},
     {path:'listaFiado', component:ListaFiadoComponent},
-    {path:'clientePrueba', component:ClientePruebaWebComponent},
+    {path:'clientes', component:ClientePruebaWebComponent},
     {path: 'pruebaWSP', component:PruebaWSPComponent}
    ]
 }];

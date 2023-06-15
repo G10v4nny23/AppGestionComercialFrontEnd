@@ -1,17 +1,19 @@
 <mat-toolbar color="primary">
   <mat-toolbar-row>
-    <h1>Gestión Comercial </h1>
 
     <button mat-icon-button (click)="sidenav.toggle()">
       <mat-icon>menu</mat-icon>
     </button>
+
+    <h1>Gestión Comercial </h1>
+
 
     <span style="flex: 1 1 auto"></span>
     <label style="font-size: 14px; margin-right: 20px">
       {{ correoUsuario }} | {{ rolUsuario }}
     </label>
 
-    <button mat-icon-button (click)="(cerrarSesion)">
+    <button mat-icon-button (click)="cerrarSesion()">
       <mat-icon>logout</mat-icon>
     </button>
   </mat-toolbar-row>
@@ -28,6 +30,16 @@
       <mat-list-item routerLink="/pages/usuarios">
         <mat-icon mat-list-icon>group</mat-icon>
         <div mat-line>Usuarios</div>
+      </mat-list-item>
+
+      <mat-list-item routerLink="/pages/clientes">
+        <mat-icon mat-list-icon>person_search</mat-icon>
+        <div mat-line>Clientes</div>
+      </mat-list-item>
+      
+      <mat-list-item routerLink="/pages/listaProveedores">
+        <mat-icon mat-list-icon>forklift</mat-icon>
+        <div mat-line>Proveedores</div>
       </mat-list-item>
 
       <mat-list-item routerLink="/pages/productos">
@@ -49,23 +61,17 @@
         <mat-icon mat-list-icon>post_add</mat-icon>
         <div mat-line>Reporte</div>
       </mat-list-item>
-      <mat-list-item routerLink="/pages/listaProveedores">
-        <mat-icon mat-list-icon>forklift</mat-icon>
-        <div mat-line>Proveedores</div>
-      </mat-list-item>
-      <mat-list-item routerLink="/pages/listaFiado">
+
+      <!-- <mat-list-item routerLink="/pages/listaFiado">
         <mat-icon mat-list-icon>attach_money</mat-icon>
         <div mat-line>Lista de Fiado</div>
-      </mat-list-item>
+      </mat-list-item> -->
 
-      <mat-list-item routerLink="/pages/clientePrueba">
-        <mat-icon mat-list-icon>supervisor_account</mat-icon>
-        <div mat-line>Clientes</div>
-      </mat-list-item>
+
 
       <mat-list-item routerLink="/pages/pruebaWSP">
-        <mat-icon mat-list-icon>supervisor_account</mat-icon>
-        <div mat-line>WSP TEST</div>
+        <mat-icon mat-list-icon>credit_card_off</mat-icon>
+        <div mat-line>Fiados</div>
       </mat-list-item>
 
       <!-- <mat-list-item *ngFor="let menu of listaMenus"  [routerLink]="menu.urlMenu">

@@ -41,6 +41,7 @@ export class LayoutComponent implements OnInit {
   }
 
   cerrarSesion(){
+
     this._utilidadServicio.eliminarSesionUsuario();
     this.router.navigate(['login']);
   }
