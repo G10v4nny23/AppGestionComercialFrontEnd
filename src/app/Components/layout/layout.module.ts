@@ -19,7 +19,6 @@ import { ClientePruebaWebComponent } from './Pages/clientePruebaWeb/clientePrueb
 import { ModalClienteWebComponent } from './Modales/modal-clienteWeb/modal-clienteWeb.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { PruebaWSPComponent } from './Pages/prueba-wsp/prueba-wsp.component';
-import { ProductoporproveedorComponent } from './Pages/productoporproveedor/productoporproveedor.component';
 
 
 
@@ -40,7 +39,6 @@ import { ProductoporproveedorComponent } from './Pages/productoporproveedor/prod
     ListaFiadoComponent,
     ClientesComponent,
     PruebaWSPComponent,
-    ProductoporproveedorComponent,
   ],
   imports: [
     CommonModule,
