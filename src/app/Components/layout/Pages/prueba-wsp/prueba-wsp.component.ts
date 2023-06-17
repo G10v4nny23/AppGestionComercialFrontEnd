@@ -73,12 +73,14 @@ export class PruebaWSPComponent implements OnInit {
     const rutCliente = row.rutCliente;
     const clienteEncontrado = this.listadoClientes.find(cliente => cliente.rutCliente === rutCliente);
     const phoneNumber = clienteEncontrado?.fonoCliente;
-    const formattedNumber = phoneNumber?.substring(1);
+    const formattedNumber = phoneNumber?.substring(1); // "569"
 
+  
       const payload = {
         message: this.message,
         phone: formattedNumber
       };
+      
       const URLApi = 'http://localhost:3001/lead';
  
       this.http.post(URLApi, payload).subscribe(

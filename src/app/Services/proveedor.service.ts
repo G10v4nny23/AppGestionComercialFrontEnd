@@ -1,31 +1,29 @@
 import { Injectable } from '@angular/core';
-
-import {HttpClient, HttpParams} from "@angular/common/http";
+import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import { environment } from 'src/environments/environment';
 import { ResponseApi } from '../Interfaces/response-api';
-import { Producto } from '../Interfaces/producto';
+import { Proveedor } from '../Interfaces/proveedor';
+
 
 @Injectable({
   providedIn: 'root'
 })
-export class ProductoService {
-  private urlApi:string = environment.endpoint + "Producto/";
+export class ProveedorService {
+  private urlApi:string = environment.endpoint + "Proveedor/";
 
   constructor(private http:HttpClient) { }
 
   lista():Observable<ResponseApi>{
     return this.http.get<ResponseApi>(`${this.urlApi}Lista`)
   }
-  guardar(request: Producto): Observable<ResponseApi>{
+  guardar(request: Proveedor): Observable<ResponseApi>{
     return this.http.post<ResponseApi>(`${this.urlApi}Guardar`, request)
   }
-  editar(request: Producto): Observable<ResponseApi>{
+  editar(request: Proveedor): Observable<ResponseApi>{
     return this.http.put<ResponseApi>(`${this.urlApi}Editar`, request)
   }
-  eliminar(id: number): Observable<ResponseApi> {
-    const params = new HttpParams().set('id', id.toString());
-    return this.http.delete<ResponseApi>(`${this.urlApi}Eliminar/id:int`, { params });
+  eliminar(rutProveedor:string): Observable<ResponseApi>{
+    return this.http.delete<ResponseApi>(`${this.urlApi}Eliminar/${rutProveedor}`)
   }
-  
 }

@@ -15,7 +15,7 @@ export class ModalDetalleVentaComponent implements OnInit {
   fechaRegistro: string ="";
   numeroDocumento: string ="";
   tipoPago: string="";
-  total: string="";
+  total: string;
   detalleVenta: DetalleVenta[] = [];
   columnasTabla: string[] = ['producto', 'cantidad', 'precio', 'total']
   

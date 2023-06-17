@@ -13,6 +13,7 @@ import { ListaFiadoComponent } from './Pages/lista-fiado/lista-fiado.component';
 import { ClientesComponent } from './Pages/clientes/clientes.component';
 import { ClientePruebaWebComponent } from './Pages/clientePruebaWeb/clientePruebaWeb.component';
 import { PruebaWSPComponent } from './Pages/prueba-wsp/prueba-wsp.component';
+import { ProductoporproveedorComponent } from './Pages/productoporproveedor/productoporproveedor.component';
 
 const routes: Routes = [{
   path:'',
@@ -27,7 +28,9 @@ const routes: Routes = [{
     {path:'listaProveedores', component:ProveedoresComponent},
     {path:'listaFiado', component:ListaFiadoComponent},
     {path:'clientes', component:ClientePruebaWebComponent},
-    {path: 'pruebaWSP', component:PruebaWSPComponent}
+    {path: 'pruebaWSP', component:PruebaWSPComponent},
+    {path:'productoProveedor', component:ProductoporproveedorComponent}
+
    ]
 }];
 

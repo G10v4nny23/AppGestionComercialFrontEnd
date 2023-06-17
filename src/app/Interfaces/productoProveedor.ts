@@ -1,4 +1,5 @@
 export interface ProductoProveedor {
-    nombre: string;
-    cantidad: number;
+    idProductoProveedor?: number
+    rutProveedor: string
+    idProducto:number
 }

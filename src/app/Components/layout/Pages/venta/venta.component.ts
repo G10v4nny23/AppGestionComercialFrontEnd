@@ -26,6 +26,11 @@ export class VentaComponent implements OnInit {
   listaProductosParaVenta:DetalleVenta[] = [];
   bloquearBotonRegistrar:boolean = false;
 
+  userId : any;
+  userName:any;
+  fechaActual = new Date();
+
+
   productoSeleccionado!: Producto;
   tipodePagoPorDefecto: string = "Efectivo";
   totalPagar: number = 0;
@@ -51,6 +56,9 @@ export class VentaComponent implements OnInit {
       cantidad:['',Validators.required],
     });
 
+
+    
+
     this._productoServicio.lista().subscribe({
       next:(data)=> {
         if(data.status){
@@ -64,6 +72,16 @@ export class VentaComponent implements OnInit {
     this.formularioProductoVenta.get('producto')?.valueChanges.subscribe(value => {
       this.listaProductosFiltro = this.retornarProductosPorFiltro(value);
     })
+
+
+    //codigo para obtener la ID del Usuario en el Local Storage
+  const usuarioString = localStorage.getItem('usuario');
+  if (usuarioString) {
+    const usuario = JSON.parse(usuarioString);
+    this.userId = usuario.idUsuario;
+    this.userName = usuario.nombreCompleto;
+  }
+
   }
 
   ngOnInit(): void {
@@ -84,13 +102,15 @@ export class VentaComponent implements OnInit {
     const _total: number = _cantidad * _precio;
     this.totalPagar = this.totalPagar + _total;
 
+    console.log(_precio);
     this.listaProductosParaVenta.push({
       idProducto : this.productoSeleccionado.idProducto,
       descripcionProducto : this.productoSeleccionado.nombreProducto,
       cantidad: _cantidad,
-      precioTexto: String(_precio.toFixed(2)),
-      totalTexto: String(_total.toFixed(2))
+      precioTexto: parseFloat(_precio.toFixed(2)),
+      totalTexto: parseFloat(_total.toFixed(2))
     })
+    
 
     this.datosDetalleVenta = new MatTableDataSource(this.listaProductosParaVenta);
 
@@ -101,27 +121,32 @@ export class VentaComponent implements OnInit {
   }
 
   eliminarProducto(detalle: DetalleVenta){
-    this.totalPagar = this.totalPagar - parseFloat(detalle.totalTexto),
+    this.totalPagar = this.totalPagar - (detalle.totalTexto),
     this.listaProductosParaVenta = this.listaProductosParaVenta.filter(p => p.idProducto != detalle.idProducto);
 
     this.datosDetalleVenta = new MatTableDataSource(this.listaProductosParaVenta);
   }
 
   registrarVenta() {
+
+   
+   
     if (this.listaProductosParaVenta.length > 0) {
       this.bloquearBotonRegistrar = true;
   
       const request: Venta = {
         tipoPago: this.tipodePagoPorDefecto,
-        totalTexto: String(this.totalPagar.toFixed(2)),
-        detalleVenta: this.listaProductosParaVenta
+        totalTexto: String(this.totalPagar),
+        detalleVenta: this.listaProductosParaVenta,
+        rutCliente:'20.596.194-1',
+        idUsuario: this.userId,
       };
   
       this._ventaServicio.registrar(request).subscribe({
         next: (response) => {
           if (response.status) {
-            this.generarBoleta(this.tipodePagoPorDefecto, String(this.totalPagar.toFixed(2)), response.value.numeroDocumento);
-            this.totalPagar = 0.00;
+            this.generarBoleta(this.tipodePagoPorDefecto,this.totalPagar, response.value.numeroDocumento);
+            this.totalPagar = 0;
             this.listaProductosParaVenta = [];
             this.datosDetalleVenta = new MatTableDataSource(this.listaProductosParaVenta);
   
@@ -147,7 +172,7 @@ export class VentaComponent implements OnInit {
   }
   
 
-  generarBoleta(tipoPago:string, totalTexto:string, numeroVenta:string){
+  generarBoleta(tipoPago:string, totalTexto:number, numeroVenta:string){
 
     const doc = new jsPDF({
       format:[100,150],//tamaño en mm
