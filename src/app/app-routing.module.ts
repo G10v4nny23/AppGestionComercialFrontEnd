@@ -4,12 +4,14 @@ import { LoginComponent } from './Components/login/login.component';
 import { ProveedoresComponent } from './Components/layout/Pages/proveedores/proveedores.component';
 
 
+
 const routes: Routes = [
   {path:'',component:LoginComponent,pathMatch:"full"},
   {path:'login',component:LoginComponent,pathMatch:"full"},
   {path:'proveedores', component: ProveedoresComponent},
   {path:'pages',loadChildren:()=>import("./Components/layout/layout.module").then(m => m.LayoutModule)},
-  {path:'**',redirectTo:'login',pathMatch:"full"}
+  {path:'**',redirectTo:'login',pathMatch:"full"},
+
 ];
 
 @NgModule({

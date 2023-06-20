@@ -1,5 +1,7 @@
 import { AfterViewInit, Component, OnInit} from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatTabChangeEvent } from '@angular/material/tabs';
+import { Router } from '@angular/router';
 import jsPDF from 'jspdf';
 import { Producto } from 'src/app/Interfaces/producto';
 import { ProductoProveedor } from 'src/app/Interfaces/productoProveedor';
@@ -8,6 +10,8 @@ import { UtilidadService } from 'src/app/Reutilizable/utilidad.service';
 import { ProductoService } from 'src/app/Services/producto.service';
 import { ProveedorService } from 'src/app/Services/proveedor.service';
 import { v4 as uuid4 } from 'uuid';
+import { MatTabGroup } from '@angular/material/tabs';
+import { nanoid } from 'nanoid';
 
 @Component({
   selector: 'app-proveedores',
@@ -16,6 +20,17 @@ import { v4 as uuid4 } from 'uuid';
 })
 export class ProveedoresComponent implements OnInit{
  
+
+  ordenCompra: any = {
+    rutProveedor: '',
+    idProducto: '',
+    cantidad: ''
+  }
+
+  ordenCompraForm:FormGroup;
+
+  tabActiva = 0;
+
   proveedor: Proveedor = {
     rutProveedor: '',
     nombreProveedor: '',
@@ -27,14 +42,32 @@ export class ProveedoresComponent implements OnInit{
   proveedores: Proveedor[] = [];
 
   displayedColumns: string[]=['rutProveedor', 'nombreProveedor','correoProveedor','telefonoProveedor','acciones']
+  matTabGroup: any;
 
   constructor(private proveedorService:ProveedorService,
-    private utilidad:UtilidadService) {}
+    private utilidad:UtilidadService,
+    private router:Router,
+    private fb:FormBuilder, 
+    private productoServicio:ProductoService
+) {
+
+      this.ordenCompraForm = this.fb.group({
+        rutProveedor:['', Validators.required],
+        cantidad:['', Validators.required],
+        idProducto:['', Validators.required],
+      })
+    }
+
+
 
   ngOnInit() {
     this.cargarProveedores();
   }
  
+  cambiarTab(pestana: number) {
+    this.tabActiva = pestana;
+  }
+
   guardarProveedor(): void {
     this.proveedorService.guardar(this.proveedor).subscribe(
       (response) => {
@@ -93,6 +126,8 @@ export class ProveedoresComponent implements OnInit{
       }
     )
   }
+
+
 
 
 

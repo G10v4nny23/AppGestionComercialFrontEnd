@@ -4,6 +4,7 @@ import {Observable} from "rxjs";
 import { environment } from 'src/environments/environment';
 import { ResponseApi } from '../Interfaces/response-api';
 import { Proveedor } from '../Interfaces/proveedor';
+import { ObserversModule } from '@angular/cdk/observers';
 
 
 @Injectable({
@@ -11,6 +12,7 @@ import { Proveedor } from '../Interfaces/proveedor';
 })
 export class ProveedorService {
   private urlApi:string = environment.endpoint + "Proveedor/";
+  private APINode:string = 'http://localhost:8080'
 
   constructor(private http:HttpClient) { }
 
@@ -26,4 +28,10 @@ export class ProveedorService {
   eliminar(rutProveedor:string): Observable<ResponseApi>{
     return this.http.delete<ResponseApi>(`${this.urlApi}Eliminar/${rutProveedor}`)
   }
+
+  generarOrdenCompra(rutProveedor:string):Observable<any>{
+    const url = `${this.APINode}/proveedores/${rutProveedor}/ordenes-compra`
+    return this.http.post<any>(url, {})
+  }
+
 }

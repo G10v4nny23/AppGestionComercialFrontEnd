@@ -18,12 +18,15 @@ constructor(private http:HttpClient) { }
 lista():Observable<ResponseApi>{
   return this.http.get<ResponseApi>(`${this.urlApi}Lista`)
 }
+
 guardar(request: ClienteWeb): Observable<ResponseApi>{
   return this.http.post<ResponseApi>(`${this.urlApi}Guardar`, request)
 }
+
 editar(request: ClienteWeb): Observable<ResponseApi>{
   return this.http.put<ResponseApi>(`${this.urlApi}Editar`, request)
 }
+
 eliminar(rutCliente:string): Observable<ResponseApi>{
   return this.http.delete<ResponseApi>(`${this.urlApi}Eliminar/${rutCliente}`)
 }

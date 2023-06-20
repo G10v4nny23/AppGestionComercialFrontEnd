@@ -24,8 +24,8 @@ export class ProductoService {
     return this.http.put<ResponseApi>(`${this.urlApi}Editar`, request)
   }
   eliminar(id: number): Observable<ResponseApi> {
-    const params = new HttpParams().set('id', id.toString());
-    return this.http.delete<ResponseApi>(`${this.urlApi}Eliminar/id:int`, { params });
+    return this.http.delete<ResponseApi>(`${this.urlApi}${id}`);
   }
+  
   
 }

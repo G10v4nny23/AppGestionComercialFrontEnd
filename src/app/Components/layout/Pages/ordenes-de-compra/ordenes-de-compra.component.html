@@ -1,0 +1,41 @@
+<!-- Primera parte: Ingresar RUT del proveedor -->
+<div *ngIf="!mostrarSegundaParte">
+    <h2>Ingresar RUT del Proveedor</h2>
+    <mat-form-field>
+      <input matInput [(ngModel)]="rutProveedor" placeholder="RUT Proveedor" type="text">
+    </mat-form-field>
+    <button mat-raised-button color="primary" (click)="mostrarSegundaParte = true; enviarOrdenCompra()">Siguiente</button>
+  </div>
+  
+  <!-- Segunda parte: Seleccionar productos -->
+  <div *ngIf="mostrarSegundaParte">
+    <h2>Seleccionar Productos</h2>
+  
+    <mat-form-field>
+      <input matInput [(ngModel)]="idOrden" placeholder="ID de la Orden" type="text">
+    </mat-form-field>
+  
+    <mat-form-field>
+      <mat-label>Seleccionar Producto</mat-label>
+      <mat-select [(ngModel)]="productoSeleccionado">
+        <mat-option *ngFor="let producto of productos" [value]="producto">{{ producto.nombreProducto }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  
+    <mat-form-field>
+      <input matInput [(ngModel)]="cantidadSeleccionada" placeholder="Cantidad" type="number">
+    </mat-form-field>
+    <button mat-raised-button color="primary" (click)="agregarProducto()">Agregar Producto</button>
+    <br>
+    <br>
+    <div *ngIf="productosSeleccionados.length > 0">
+      <h3>Productos Seleccionados:</h3>
+      <div *ngFor="let producto of productosSeleccionados">
+        <p>{{ producto.producto.nombreProducto }} - Cantidad: {{ producto.cantidad }}</p>
+      </div>
+      <button mat-raised-button color="primary" (click)="agregarDetalleOrdenCompra()" [disabled]="!productosSeleccionadosValidos()">Generar Orden de Compra</button>
+      <button mat-raised-button color="primary" (click)="generarPDF()">Generar PDF</button>
+
+    </div>
+  </div>
+  
