@@ -116,6 +116,7 @@ export class OrdenesDeCompraComponent {
     }
 
     this.cargarDetalleOrden(idOrdenCompra);
+    this.generarPDF();
   }
 
 
@@ -150,7 +151,8 @@ export class OrdenesDeCompraComponent {
           console.error("No se encontraron datos válidos en la respuesta del servidor.");
           return;
         }
-  
+        console.log(this.productosSeleccionados);
+        console.log(detalleOrden);
         const doc = new jsPDF();
   
         // Contenido del PDF
@@ -158,13 +160,14 @@ export class OrdenesDeCompraComponent {
         doc.text(`ID de la Orden: ${idOrdenCompra}`, 10, 20);
   
         let y = 40;
-        for (let i = 0; i < detalleOrden.length; i++) {
+        for (let i = 0; i < this.productosSeleccionados.length; i++) {
           const detalle = detalleOrden[i];
           doc.text(`ID Detalle Orden: ${detalle.ID_DETALLE_ORDEN}`, 10, y);
           doc.text(`ID Producto: ${detalle.ID_PRODUCTO}`, 10, y + 10);
           doc.text(`Cantidad: ${detalle.CANTIDAD}`, 10, y + 20);
           y += 40;
         }
+
   
         // Mostrar el PDF en una nueva pestaña del navegador
         doc.output('dataurlnewwindow');

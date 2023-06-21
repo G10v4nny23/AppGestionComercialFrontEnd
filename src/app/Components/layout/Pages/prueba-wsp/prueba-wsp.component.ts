@@ -11,6 +11,9 @@ import { HttpClient } from '@angular/common/http';
 import { ClienteWeb } from 'src/app/Interfaces/clienteWeb';
 import { ClienteWebService } from 'src/app/Services/clienteWeb.service';
 import { MatDialog } from '@angular/material/dialog';
+import { TransbankService } from 'src/app/Services/transbank.service';
+import { Transbank } from 'src/app/Interfaces/transbank';
+import { nanoid } from 'nanoid';
 
 
 
@@ -56,11 +59,11 @@ export class PruebaWSPComponent implements OnInit {
     private utilidad: UtilidadService,
     private clienteService: ClienteWebService,
     private http:HttpClient,
-    private dialog:MatDialog
+    private transbank:TransbankService
   ) {
     this.currentDate = new Date();
     this.formattedDate = moment(this.currentDate).format('DD/MM/YYYY')
-    this.message = `Estimado Cliente, le informamos que su boleta fue registrada con fecha ${this.formattedDate}. Gracias por preferirnos`;
+    this.message = `Estimado Cliente, le informamos que su boleta fue registrada con fecha ${this.formattedDate}. Por favor pagar antes de fin de mes en este link [LINK] Gracias por preferirnos`;
     this.phoneNumber = ''
   }
 
@@ -70,14 +73,25 @@ export class PruebaWSPComponent implements OnInit {
   }
 
   sendWhatsAppMessage(row: any) {
-    const rutCliente = row.rutCliente;
+
+    const payloadTB: Transbank = {
+      amount:row.total,
+      buyOrder:nanoid(),
+      sessionId:nanoid(),
+      returnUrl:'http://localhost:4200/pages/confirmacionTB'
+    };
+
+    this.transbank.crearTransaccion(payloadTB).subscribe(response=>{
+
+      const rutCliente = row.rutCliente;
     const clienteEncontrado = this.listadoClientes.find(cliente => cliente.rutCliente === rutCliente);
-    const phoneNumber = clienteEncontrado?.fonoCliente;
+    const phoneNumber = clienteEncontrado!.fonoCliente;
     const formattedNumber = phoneNumber?.substring(1); // "569"
 
+    console.log(formattedNumber);
   
       const payload = {
-        message: this.message,
+        message: this.message.replace("[LINK]", response.url),
         phone: formattedNumber
       };
       
@@ -90,6 +104,11 @@ export class PruebaWSPComponent implements OnInit {
           this.utilidad.mostrarAlerta("Mensaje no ha sido enviado", "Oops!")
         }
       )
+
+    })
+
+
+    
 
   }
   

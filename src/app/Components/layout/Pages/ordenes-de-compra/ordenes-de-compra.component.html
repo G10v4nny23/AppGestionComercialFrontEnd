@@ -34,7 +34,6 @@
         <p>{{ producto.producto.nombreProducto }} - Cantidad: {{ producto.cantidad }}</p>
       </div>
       <button mat-raised-button color="primary" (click)="agregarDetalleOrdenCompra()" [disabled]="!productosSeleccionadosValidos()">Generar Orden de Compra</button>
-      <button mat-raised-button color="primary" (click)="generarPDF()">Generar PDF</button>
 
     </div>
   </div>

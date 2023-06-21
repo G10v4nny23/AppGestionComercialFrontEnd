@@ -20,6 +20,7 @@ import { ModalClienteWebComponent } from './Modales/modal-clienteWeb/modal-clien
 import { ReactiveFormsModule } from '@angular/forms';
 import { PruebaWSPComponent } from './Pages/prueba-wsp/prueba-wsp.component';
 import { OrdenesDeCompraComponent } from './Pages/ordenes-de-compra/ordenes-de-compra.component';
+import { ConfirmacionTransbankComponent } from './Pages/confirmacion-transbank/confirmacion-transbank.component';
 
 
 
@@ -45,6 +46,7 @@ import { OrdenesDeCompraComponent } from './Pages/ordenes-de-compra/ordenes-de-c
     ClientesComponent,
     PruebaWSPComponent,
     OrdenesDeCompraComponent,
+    ConfirmacionTransbankComponent,
   ],
   imports: [
     CommonModule,
