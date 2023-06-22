@@ -6,4 +6,5 @@ export interface Producto {
     stock:number,
     precio:string,
     esActivoProducto:number
+    precioCompra?:number
 }

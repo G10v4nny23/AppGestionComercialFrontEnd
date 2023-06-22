@@ -4,5 +4,7 @@ export interface VistaFiados {
     rutCliente:string,
     numeroDocumento: number,
     total:number,
-    fechaVenta:string;
+    fechaVenta:string
+    fechaPago?:string
+    esPagada: boolean
 };

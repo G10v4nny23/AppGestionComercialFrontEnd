@@ -6,10 +6,15 @@ import { map } from 'rxjs/operators';
 import { ResponseApi } from 'src/app/Interfaces/response-api';
 import { UtilidadService } from 'src/app/Reutilizable/utilidad.service';
 import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
+
 
 interface ProductoSeleccionado {
   producto: Producto;
   cantidad: number;
+  precioCompra:number
+  total?:number
+
 }
 
 @Component({
@@ -55,7 +60,8 @@ export class OrdenesDeCompraComponent {
     if (this.productoSeleccionado) {
       const productoSeleccionado: ProductoSeleccionado = {
         producto: this.productoSeleccionado,
-        cantidad: this.cantidadSeleccionada
+        cantidad: this.cantidadSeleccionada,
+        precioCompra: this.productoSeleccionado.precioCompra
       };
       this.productosSeleccionados.push(productoSeleccionado);
       this.productoSeleccionado = null;
@@ -151,24 +157,42 @@ export class OrdenesDeCompraComponent {
           console.error("No se encontraron datos válidos en la respuesta del servidor.");
           return;
         }
-        console.log(this.productosSeleccionados);
-        console.log(detalleOrden);
-        const doc = new jsPDF();
   
-        // Contenido del PDF
-        doc.text('Detalle de la Orden de Compra', 10, 10);
-        doc.text(`ID de la Orden: ${idOrdenCompra}`, 10, 20);
+        // anotamos variables para hacer el cálculo del IVA
+        let totalGeneral = 0;
+        const doc = new jsPDF('portrait','pt', 'legal');
   
-        let y = 40;
-        for (let i = 0; i < this.productosSeleccionados.length; i++) {
-          const detalle = detalleOrden[i];
-          doc.text(`ID Detalle Orden: ${detalle.ID_DETALLE_ORDEN}`, 10, y);
-          doc.text(`ID Producto: ${detalle.ID_PRODUCTO}`, 10, y + 10);
-          doc.text(`Cantidad: ${detalle.CANTIDAD}`, 10, y + 20);
-          y += 40;
-        }
+        // Contenido del PDF //
 
+        // Encabezados de la tabla
+        const headers = ['ID Producto', 'Nombre Producto', 'Cantidad', 'Precio', 'Total'];
   
+        const data = this.productosSeleccionados.map((productoSeleccionado) => {
+          const { producto, cantidad, precioCompra } = productoSeleccionado;
+          const total = cantidad * precioCompra;
+          totalGeneral += total; // Sumar al total general
+  
+          return [producto.idProducto, producto.nombreProducto, cantidad, precioCompra, total];
+        });
+
+        const iva = 0.19;
+        const totalIVA = totalGeneral *(1+iva);
+        console.log(totalIVA)  
+
+        // Generar la tabla
+        autoTable(doc, {
+          head: [headers],
+          body: data,
+          startY: 50
+        });
+        const textOptionsLight = "center"
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(10);
+        doc.text("Gestion Comercial LTDA", 20, 20, null);
+        doc.text(`Orden de Compra número: ${idOrdenCompra}`, 20, 35, null)
+        doc.text(`Neto Orden de Compra $${totalGeneral}`, 375, 120, null)
+        doc.text(`Total Orden de Compra $${totalIVA}`, 375, 135, null)
+        
         // Mostrar el PDF en una nueva pestaña del navegador
         doc.output('dataurlnewwindow');
       },
@@ -177,6 +201,7 @@ export class OrdenesDeCompraComponent {
       }
     );
   }
+  
 
 
 }

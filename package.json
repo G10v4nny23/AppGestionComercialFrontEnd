@@ -24,6 +24,7 @@
     "@types/uuid": "^9.0.1",
     "chart.js": "^3.9.1",
     "jspdf": "^2.5.1",
+    "jspdf-autotable": "^3.5.29",
     "moment": "^2.29.4",
     "nanoid": "^4.0.2",
     "pdfmake": "^0.2.7",

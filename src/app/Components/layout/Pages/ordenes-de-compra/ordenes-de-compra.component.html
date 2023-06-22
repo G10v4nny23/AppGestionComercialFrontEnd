@@ -25,6 +25,7 @@
     <mat-form-field>
       <input matInput [(ngModel)]="cantidadSeleccionada" placeholder="Cantidad" type="number">
     </mat-form-field>
+  
     <button mat-raised-button color="primary" (click)="agregarProducto()">Agregar Producto</button>
     <br>
     <br>
@@ -32,9 +33,9 @@
       <h3>Productos Seleccionados:</h3>
       <div *ngFor="let producto of productosSeleccionados">
         <p>{{ producto.producto.nombreProducto }} - Cantidad: {{ producto.cantidad }}</p>
+        <p>Precio de compra: {{ producto.producto.precioCompra }}</p> <!-- Muestra el precio de compra -->
       </div>
       <button mat-raised-button color="primary" (click)="agregarDetalleOrdenCompra()" [disabled]="!productosSeleccionadosValidos()">Generar Orden de Compra</button>
-
     </div>
   </div>
   
