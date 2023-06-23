@@ -1,0 +1,28 @@
+.transbank-message-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Ajusta la altura según tus necesidades */
+  }
+  
+  .transbank-message {
+    background-color: #f5f5f5;
+    padding: 10px;
+    border-radius: 5px;
+    font-family: Arial, sans-serif;
+    text-align: center;
+  }
+  
+  .transbank-message p {
+    margin-bottom: 5px;
+    font-size: 16px;
+  }
+  
+  .transbank-message p strong {
+    font-weight: bold;
+  }
+  
+  .transbank-message p span {
+    color: #555;
+  }
+  

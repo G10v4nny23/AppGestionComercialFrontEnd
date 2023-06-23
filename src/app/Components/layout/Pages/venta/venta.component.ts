@@ -12,6 +12,10 @@ import { Venta } from 'src/app/Interfaces/venta';
 import { DetalleVenta } from 'src/app/Interfaces/detalle-venta';
 import Swal from 'sweetalert2';
 import jsPDF from 'jspdf';
+import { ClienteWebService } from 'src/app/Services/clienteWeb.service';
+import { Usuario } from 'src/app/Interfaces/usuario';
+import { validate } from 'uuid';
+import { ClienteWeb } from 'src/app/Interfaces/clienteWeb';
 
 @Component({
   selector: 'app-venta',
@@ -22,6 +26,8 @@ export class VentaComponent implements OnInit {
 
   listaProductos:Producto[] = [];
   listaProductosFiltro:Producto[] = [];
+  dataListaCliente:ClienteWeb[] = [];
+  
 
   listaProductosParaVenta:DetalleVenta[] = [];
   bloquearBotonRegistrar:boolean = false;
@@ -34,9 +40,10 @@ export class VentaComponent implements OnInit {
   productoSeleccionado!: Producto;
   tipodePagoPorDefecto: string = "Efectivo";
   totalPagar: number = 0;
+  rutSeleccionado: ClienteWeb;
 
   formularioProductoVenta: FormGroup;
-  columnasTabla: string[]=['producto','cantidad','precio','total','accion'];
+  columnasTabla: string[]=['producto','cantidad','rut','precio','total','accion'];
   datosDetalleVenta = new MatTableDataSource(this.listaProductosParaVenta);
 
   retornarProductosPorFiltro(busqueda:any):Producto[]{
@@ -49,11 +56,13 @@ export class VentaComponent implements OnInit {
     private fb:FormBuilder,
     private _productoServicio: ProductoService,
     private _ventaServicio: VentaService,
-    private _utilidadServicio: UtilidadService
+    private _utilidadServicio: UtilidadService,
+    private _clienteServicio: ClienteWebService,
   ){
     this.formularioProductoVenta = this.fb.group({
       producto:['',Validators.required],
       cantidad:['',Validators.required],
+      rut:['',Validators.required],
     });
 
 
@@ -85,14 +94,24 @@ export class VentaComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    this.obtenerClientes();
   }
 
   mostrarProducto(producto: Producto):string{
     return producto.nombreProducto;
   }
 
+  mostrarRut(rut: ClienteWeb):string{
+    return rut.rutCliente;
+  }
+
   productoParaVenta(event:any){
     this.productoSeleccionado = event.option.value;
+  }
+
+  rutParaVenta(event:any){
+    this.rutSeleccionado = event.option.value;
   }
 
   agregarProductoParaVenta(){
@@ -102,9 +121,10 @@ export class VentaComponent implements OnInit {
     const _total: number = _cantidad * _precio;
     this.totalPagar = this.totalPagar + _total;
 
-    console.log(_precio);
+    console.log(this.formularioProductoVenta.value.rut);
     this.listaProductosParaVenta.push({
       idProducto : this.productoSeleccionado.idProducto,
+      rut:this.formularioProductoVenta.value.rut.rutCliente,
       descripcionProducto : this.productoSeleccionado.nombreProducto,
       cantidad: _cantidad,
       precioTexto: parseFloat(_precio.toFixed(2)),
@@ -138,7 +158,7 @@ export class VentaComponent implements OnInit {
         tipoPago: this.tipodePagoPorDefecto,
         totalTexto: String(this.totalPagar),
         detalleVenta: this.listaProductosParaVenta,
-        rutCliente:'20.596.194-1',
+        rutCliente: this.rutSeleccionado.rutCliente,
         idUsuario: this.userId,
       };
   
@@ -193,6 +213,23 @@ export class VentaComponent implements OnInit {
     const nombrePDF = `boleta_venta_${numeroVenta}.pdf`
     doc.save(nombrePDF)
 
+  }
+
+  obtenerClientes() {
+    this._clienteServicio.lista().subscribe({
+      next: (data) => {
+        if (data.status) {
+          console.log(data.status)
+          this.dataListaCliente = data.value;
+          console.log(this.dataListaCliente);
+          
+        } else {
+          console.log(data.status);
+          this._utilidadServicio.mostrarAlerta('No se encontraron datos', 'Error');
+        }
+      },
+      error: (e) => {},
+    });
   }
 
 }

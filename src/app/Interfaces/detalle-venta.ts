@@ -3,5 +3,6 @@ export interface DetalleVenta {
     descripcionProducto:string,
     cantidad:number,
     precioTexto:number,
-    totalTexto:number
+    totalTexto:number,
+    rut: string
 }
