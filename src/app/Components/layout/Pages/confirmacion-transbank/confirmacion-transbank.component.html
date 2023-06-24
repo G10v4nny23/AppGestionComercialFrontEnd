@@ -1,10 +1,17 @@
 <div class="transbank-message-container">
     <div class="transbank-message">
+    <div *ngIf="transbankConfirm.estado == 'AUTHORIZED'">
       <p>
         Hola! Es un agrado informar que su venta ha sido <strong>{{ transbankConfirm.estado }}</strong>
         con fecha del <strong>{{ transbankConfirm.fechaTransaccion }}</strong>
         y un monto de <strong>{{ transbankConfirm.monto }}</strong>.
       </p>
+      
+    </div>
+      
+      
+
+
     </div>
   </div>
   

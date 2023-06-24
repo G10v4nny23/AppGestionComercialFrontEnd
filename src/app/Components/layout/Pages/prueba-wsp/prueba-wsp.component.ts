@@ -44,6 +44,7 @@ export class PruebaWSPComponent implements OnInit {
     'numeroDocumento',
     'total',
     'fechaVenta',
+    'estado',
     'actions'
   ];
 
@@ -59,20 +60,30 @@ export class PruebaWSPComponent implements OnInit {
     private utilidad: UtilidadService,
     private clienteService: ClienteWebService,
     private http:HttpClient,
-    private transbank:TransbankService
+    private transbank:TransbankService,
   ) {
     this.currentDate = new Date();
     this.formattedDate = moment(this.currentDate).format('DD/MM/YYYY')
-    this.message = `Estimado Cliente, le informamos que su boleta fue registrada con fecha ${this.formattedDate}. Por favor pagar antes de fin de mes en este link [LINK] Gracias por preferirnos`;
+    this.message = `Estimado Cliente, le informamos que su boleta fue registrada con fecha de pago [PAGO]. Por favor, pagar antes de la fecha indicada en el siguiente link:  [LINK] Gracias por preferirnos`;
     this.phoneNumber = ''
   }
+
+
+
+
+
 
   ngOnInit(): void {
     this.obtenerDatosTabla();
     this.listarCliente();
   }
 
+
+
   sendWhatsAppMessage(row: any) {
+
+
+    const fechaPago = prompt("Ingrese la fecha de pago en este formato: dd/mm/yyyy")
 
     const payloadTB: Transbank = {
       amount:row.total,
@@ -83,17 +94,19 @@ export class PruebaWSPComponent implements OnInit {
 
     this.transbank.crearTransaccion(payloadTB).subscribe(response=>{
 
-      const rutCliente = row.rutCliente;
+    const rutCliente = row.rutCliente;
+    console.log(rutCliente)
     const clienteEncontrado = this.listadoClientes.find(cliente => cliente.rutCliente === rutCliente);
     const phoneNumber = clienteEncontrado!.fonoCliente;
-    const formattedNumber = phoneNumber?.substring(1); // "569"
+    const formattedNumber = phoneNumber.substring(1); // "569"
 
     console.log(formattedNumber);
   
-      const payload = {
-        message: this.message.replace("[LINK]", response.url),
-        phone: formattedNumber
-      };
+    const payload = {
+      message: this.message.replace(/\[LINK\]/g, response.url).replace(/\[PAGO\]/g, fechaPago),
+      phone: formattedNumber
+    };
+    
       
       const URLApi = 'http://localhost:3001/lead';
  
