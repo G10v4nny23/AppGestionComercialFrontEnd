@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import {Observable} from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { ResponseApi } from '../Interfaces/response-api';
+import { VistaFiados } from '../Interfaces/vista-fiados';
 
 
 
@@ -19,5 +20,24 @@ export class ServicioFiadoService {
   lista():Observable<ResponseApi>{
     return this.http.get<ResponseApi>(`${this.urlAPI}Lista`)
   }
+
+  
+  editar(fiado: VistaFiados): Observable<ResponseApi> {
+    const url = `${this.urlAPI}Editar`;
+
+    return this.http.put<ResponseApi>(url, fiado);
+  }
+
+  cambiarEstado(fiado: VistaFiados): Observable<ResponseApi> {
+    const url = `${this.urlAPI}CambiarEstado`;
+
+    return this.http.put<ResponseApi>(url, fiado);
+  }
+
+
+
+
+
+
 
 }

@@ -15,8 +15,6 @@ import { TransbankService } from 'src/app/Services/transbank.service';
 import { Transbank } from 'src/app/Interfaces/transbank';
 import { nanoid } from 'nanoid';
 
-
-
 export const MY_DATA_FORMATS = {
   parse: {
     dateInput: 'DD/MM/YYYY',
@@ -31,12 +29,10 @@ export const MY_DATA_FORMATS = {
   selector: 'app-prueba-wsp',
   templateUrl: './prueba-wsp.component.html',
   styleUrls: ['./prueba-wsp.component.css'],
-  providers:[
-    {provide:MAT_DATE_FORMATS, useValue:MY_DATA_FORMATS}
-  ]
+  providers: [{ provide: MAT_DATE_FORMATS, useValue: MY_DATA_FORMATS }],
 })
 export class PruebaWSPComponent implements OnInit {
-  dataSource: MatTableDataSource<VistaFiados> = new MatTableDataSource;
+  dataSource: MatTableDataSource<VistaFiados> = new MatTableDataSource();
   displayedColumns: string[] = [
     'idVenta',
     'idUsuario',
@@ -45,100 +41,81 @@ export class PruebaWSPComponent implements OnInit {
     'total',
     'fechaVenta',
     'estado',
-    'actions'
+    'fechaPago',
+    'actions',
   ];
 
-  selectedRow:any;
+  selectedRow: any;
   currentDate: Date;
   formattedDate: string;
-  listadoClientes : ClienteWeb[] = []
-  message : string;
+  listadoClientes: ClienteWeb[] = [];
+  message: string;
   phoneNumber: string;
 
   constructor(
     private servicioFiado: ServicioFiadoService,
     private utilidad: UtilidadService,
     private clienteService: ClienteWebService,
-    private http:HttpClient,
-    private transbank:TransbankService,
+    private http: HttpClient,
+    private transbank: TransbankService
   ) {
     this.currentDate = new Date();
-    this.formattedDate = moment(this.currentDate).format('DD/MM/YYYY')
-    this.message = `Estimado Cliente, le informamos que su boleta fue registrada con fecha de pago [PAGO]. Por favor, pagar antes de la fecha indicada en el siguiente link:  [LINK] Gracias por preferirnos`;
-    this.phoneNumber = ''
+    this.formattedDate = moment(this.currentDate).format('DD/MM/YYYY');
+    this.message = `Estimado Cliente, le informamos que su boleta fue registrada. Para pagar, lo puede hacer presencialmente o en el siguiente link: [LINK] Gracias por preferirnos`;
+    this.phoneNumber = '';
   }
-
-
-
-
-
 
   ngOnInit(): void {
     this.obtenerDatosTabla();
-    this.listarCliente();
+    this.listarCliente()
   }
-
-
 
   sendWhatsAppMessage(row: any) {
-
-
-    const fechaPago = prompt("Ingrese la fecha de pago en este formato: dd/mm/yyyy")
-
     const payloadTB: Transbank = {
-      amount:row.total,
-      buyOrder:nanoid(),
-      sessionId:nanoid(),
-      returnUrl:'http://localhost:4200/pages/confirmacionTB'
+      amount: row.total,
+      buyOrder: nanoid(),
+      sessionId: nanoid(),
+      returnUrl: 'http://localhost:4200/pages/confirmacionTB',
     };
 
-    this.transbank.crearTransaccion(payloadTB).subscribe(response=>{
+    this.transbank.crearTransaccion(payloadTB).subscribe((response) => {
 
-    const rutCliente = row.rutCliente;
-    console.log(rutCliente)
-    const clienteEncontrado = this.listadoClientes.find(cliente => cliente.rutCliente === rutCliente);
-    const phoneNumber = clienteEncontrado!.fonoCliente;
-    const formattedNumber = phoneNumber.substring(1); // "569"
+      console.log(row)
+      const rutCliente = row.rutCliente;
+      console.log(rutCliente);
+      const clienteEncontrado = this.listadoClientes.find((cliente) => cliente.rutCliente === rutCliente);
+      const phoneNumber = clienteEncontrado.fonoCliente;
+      console.log(phoneNumber)
+      const formattedNumber = phoneNumber.substring(1); // "569"
 
-    console.log(formattedNumber);
-  
-    const payload = {
-      message: this.message.replace(/\[LINK\]/g, response.url).replace(/\[PAGO\]/g, fechaPago),
-      phone: formattedNumber
-    };
-    
-      
+      console.log(formattedNumber);
+
+      const payload = {
+        message: this.message.replace(/\[LINK\]/g, response.url),
+        phone: formattedNumber,
+      };
+
       const URLApi = 'http://localhost:3001/lead';
- 
+
       this.http.post(URLApi, payload).subscribe(
-        ()=>{
-          this.utilidad.mostrarAlerta("Mensaje Enviado!", "Listo!")
-        }, error=>{
-          this.utilidad.mostrarAlerta("Mensaje no ha sido enviado", "Oops!")
+        () => {
+          this.utilidad.mostrarAlerta('Mensaje Enviado!', 'Listo!');
+        },
+        (error) => {
+          this.utilidad.mostrarAlerta('Mensaje no ha sido enviado', 'Oops!');
         }
-      )
-
-    })
-
-
-    
-
+      );
+    });
   }
-  
-  
 
-
-  listarCliente(){
+  listarCliente() {
     this.clienteService.lista().subscribe({
-      next:(data)=>{
-        if(data.status)
-        this.listadoClientes = data.value
-        console.log(this.listadoClientes)
-      }
-    })
+      next: (data) => {
+        if (data.status) this.listadoClientes = data.value;
+        console.log(this.listadoClientes);
+      },
+    });
   }
-
-
 
   obtenerDatosTabla() {
     this.servicioFiado.lista().subscribe({
@@ -147,7 +124,10 @@ export class PruebaWSPComponent implements OnInit {
           const formattedData = data.value.map((item: VistaFiados) => {
             return {
               ...item,
-              fechaVenta: moment(item.fechaVenta).format('DD/MM/YYYY'), // Formatear la fecha
+              fechaVenta: moment(item.fechaVenta).format('DD/MM/YYYY'), // Formatear la fecha de venta
+              fechaPago: item.fechaPago
+                ? moment(item.fechaPago).format('DD/MM/YYYY')
+                : '', // Formatear la fecha de pago solo si no es nula
             };
           });
           this.dataSource = new MatTableDataSource<VistaFiados>(formattedData);
@@ -158,13 +138,32 @@ export class PruebaWSPComponent implements OnInit {
     });
   }
 
+  editarFecha(row: VistaFiados, event: any) {
+    const newDate = moment(event.value).format('YYYY-MM-DDTHH:mm:ss');
+    row.fechaPago = newDate;
 
+    this.servicioFiado.cambiarEstado(row).subscribe((response: ResponseApi) => {
+      if (response.status) {
+        this.utilidad.mostrarAlerta('Fecha de pago actualizada', 'Ok!');
+      } else {
+        this.utilidad.mostrarAlerta(
+          'Error al editar la fecha de pago',
+          'Damn :('
+        );
+      }
+    });
+  }
 
+  cambiarEstado(row: VistaFiados) {
+    row.pagado = true;
 
-
-
-
-
+    this.servicioFiado.editar(row).subscribe((response: ResponseApi) => {
+      if (response.status) {
+        this.utilidad.mostrarAlerta('Fiado Pagado!', 'Bien!');
+        this.obtenerDatosTabla(); // Actualizar la tabla después de cambiar el estado
+      } else {
+        this.utilidad.mostrarAlerta('El fiado no se pudo pagar', ':(');
+      }
+    });
+  }
 }
-
-

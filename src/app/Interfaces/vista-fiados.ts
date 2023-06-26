@@ -7,5 +7,5 @@ export interface VistaFiados {
     total:number,
     fechaVenta:string
     fechaPago?:string
-    esPagada: boolean
+    pagado: boolean
 };
