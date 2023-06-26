@@ -19,6 +19,7 @@ import { ConfirmacionTransbankComponent } from './Pages/confirmacion-transbank/c
 
 
 
+
 const routes: Routes = [{
   path:'',
   component:LayoutComponent,
@@ -34,7 +35,8 @@ const routes: Routes = [{
     {path:'clientes', component:ClientePruebaWebComponent},
     {path: 'pruebaWSP', component:PruebaWSPComponent},
     {path:'ordenesCompra', component:OrdenesDeCompraComponent},
-    {path:'confirmacionTB', component:ConfirmacionTransbankComponent}
+    {path:'confirmacionTB', component:ConfirmacionTransbankComponent},
+
 
 
    ]

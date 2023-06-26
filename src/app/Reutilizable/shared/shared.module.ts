@@ -26,6 +26,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatTabsModule} from '@angular/material/tabs';
+import {MatExpansionModule, MatExpansionPanel, matExpansionAnimations} from '@angular/material/expansion';
 
 import {MatNativeDateModule} from '@angular/material/core';
 import { MomentDateModule } from '@angular/material-moment-adapter';
@@ -62,7 +63,8 @@ import { MomentDateModule } from '@angular/material-moment-adapter';
     MatDatepickerModule,
     MatNativeDateModule,
     MomentDateModule,
-    MatTabsModule
+    MatTabsModule,
+    MatExpansionModule
   ],
   providers:[
     MatDatepickerModule,
