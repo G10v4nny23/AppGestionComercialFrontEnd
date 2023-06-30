@@ -28,6 +28,7 @@ import { ConfirmacionTransbankComponent } from './Pages/confirmacion-transbank/c
 
 
 
+
 @NgModule({
   declarations: [
     DashBoardComponent,

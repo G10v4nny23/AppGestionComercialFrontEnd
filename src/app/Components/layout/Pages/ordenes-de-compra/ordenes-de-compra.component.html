@@ -9,7 +9,7 @@
   
   <!-- Segunda parte: Seleccionar productos -->
   <div *ngIf="mostrarSegundaParte">
-    <h2>Seleccionar Productos</h2>
+    <h2>Seleccionar Productos  {{rutProveedor}}</h2>
   
     <mat-form-field>
       <input matInput [(ngModel)]="idOrden" placeholder="ID de la Orden" type="text">
@@ -36,6 +36,27 @@
         <p>Precio de compra: {{ producto.producto.precioCompra }}</p> <!-- Muestra el precio de compra -->
       </div>
       <button mat-raised-button color="primary" (click)="agregarDetalleOrdenCompra()" [disabled]="!productosSeleccionadosValidos()">Generar Orden de Compra</button>
+    </div>
+
+    <div *ngIf="ordenesProveedor.length > 0">
+      mostrar todas sus ordenes
+      <table border="1">
+        <tr>
+          <td>id orden compra</td>
+          <td>id detalle orden</td>
+          <td>rut provedor</td>
+          <td>nombre_producto</td>
+        </tr>
+        <tbody>
+          <tr *ngFor="let ordene of ordenesProveedor">
+            <td>{{ordene.ID_ORDEN_COMPRA}}</td>
+            <td>{{ordene.ID_DETALLE_ORDEN}}</td>
+            <td>{{ordene.RUT_PROVEEDOR}}</td>
+            <td>{{ordene.NOMBRE_PRODUCTO}}</td>            
+          </tr>
+        </tbody>
+
+      </table>
     </div>
   </div>
   

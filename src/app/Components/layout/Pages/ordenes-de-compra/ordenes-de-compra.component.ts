@@ -34,6 +34,8 @@ export class OrdenesDeCompraComponent {
   productosDetalle: string[] = [];
   idOrden: number = 0;
 
+  ordenesProveedor: any[] = []
+
   constructor(
     private http: HttpClient,
     private ps: ProductoService,
@@ -88,6 +90,7 @@ export class OrdenesDeCompraComponent {
         console.log(response.message);
 
         this.utilidad.mostrarAlerta(`Orden de Compra ingresada con orden: ${orderId}`, "Ok!");
+        this.cargarDetalleOrden();
       },
       error => {
         console.error(error);
@@ -121,17 +124,21 @@ export class OrdenesDeCompraComponent {
       );
     }
 
-    this.cargarDetalleOrden(idOrdenCompra);
+    // this.cargarDetalleOrden(idOrdenCompra);
     this.generarPDF();
   }
 
 
-  cargarDetalleOrden(idOrden: number) {
-    const endpoint = `http://localhost:8080/orden-compra/${idOrden}/detalle`;
+  cargarDetalleOrden() {
+  // cargarDetalleOrden(idOrden: number) {
+    const endpoint = `http://localhost:8080/proveedores/${this.rutProveedor}/ordenes-compra`;
+    // const endpoint = `http://localhost:8080/orden-compra/${idOrden}/detalle`;
 
     this.http.get(endpoint).subscribe(
       (response: any) => {
-        this.detalleOrden = response;
+        // this.detalleOrden = response;
+        this.ordenesProveedor = response;
+        console.log(response)
       },
       error => {
         console.error(error);
@@ -201,6 +208,8 @@ export class OrdenesDeCompraComponent {
       }
     );
   }
+
+
   
 
 
